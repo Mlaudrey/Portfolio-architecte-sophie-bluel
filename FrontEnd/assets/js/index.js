@@ -126,13 +126,6 @@ if (sessionStorage.getItem("token")) {
     container.appendChild(edition);
 
 
-    const changment = document.createElement("button");
-    changment.type = "button";
-
-    const modification_changment = `
-     <p>publier les changements</p>  `;
-    changment.insertAdjacentHTML("beforeend", modification_changment);
-    changment.className = "publier";
 
     changment.onclick = function() {};
     const changements = document.getElementById("modify");

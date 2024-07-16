@@ -317,7 +317,5 @@ if (sessionStorage.getItem("token")) {
     // Ajout du bouton "modifier" dans la page
     document.getElementById("updates").insertAdjacentHTML("afterbegin", updates);
 
-    document.getElementById("intro").insertAdjacentHTML("afterbegin", modifier);
-    document.getElementById("introduction_photo").insertAdjacentHTML("beforeend", modifier);
 
 }
