@@ -1,274 +1,266 @@
-// si on est connecté on affiche une div 
-const modal = document.getElementById("modal");
-const update = document.getElementById("updates");
-const close = document.getElementById("close");
-const deleteBtn = document.getElementById("deleteBtn");
-//quand on est connecté on affiche le bouton modifier
+// Récupération des éléments du DOM nécessaires pour manipuler la modal et les boutons
+const modal = document.getElementById("modal"); // La modal elle-même
+const update = document.getElementById("updates"); // Le bouton "modifier" ou la section de mise à jour
+const close = document.getElementById("close"); // Le bouton pour fermer la modal
+const deleteBtn = document.getElementById("deleteBtn"); // Le bouton pour supprimer tous les projets
+
+// Vérifier si un token est présent dans le sessionStorage pour afficher le bouton "modifier"
 if (sessionStorage.getItem("token")) {
-    update.style.display = "block";
+    // Vérifier si le bouton "modifier" n'existe pas déjà dans #updates pour éviter la duplication
+    if (!document.getElementById("modifier")) {
+        // Créer l'élément div pour le bouton "modifier" avec une icône et un texte
+        const modifier = document.createElement("div");
+        modifier.id = "modifier"; // Attribuer un ID unique à l'élément pour pouvoir le manipuler plus tard
+        modifier.innerHTML = `
+            <i class="fa-regular fa-pen-to-square"></i> <!-- Icône pour modifier -->
+            <p>modifier</p> <!-- Texte pour le bouton -->
+        `;
+
+        // Ajouter l'élément "modifier" à l'élément #updates
+        update.appendChild(modifier);
+
+        // Rendre visible le bouton "modifier" en affichant #updates
+        update.style.display = "flex";
+    }
 } else {
+    // Si aucun token n'est trouvé, masquer le bouton "modifier" en cachant #updates
     update.style.display = "none";
 }
 
-// lorsqu'on click sur modifier on affiche une modal
+// Ajouter un écouteur d'événements pour ouvrir la modal lorsque le bouton "modifier" est cliqué
 update.addEventListener("click", function() {
-    modal.style.display = "block";
+    modal.style.display = "block"; // Afficher la modal
 });
 
-
-
-// lorsqu'on click sur le bouton close on ferme la modal
+// Ajouter un écouteur d'événements pour fermer la modal lorsque le bouton "close" est cliqué
 close.addEventListener("click", function() {
-    modal.style.display = "none";
+    modal.style.display = "none"; // Cacher la modal
 });
 
-// Quand l'utilisateur clique en dehors du modal, ferme le modal
+// Ajouter un écouteur d'événements pour fermer la modal lorsque l'on clique en dehors de celle-ci
 window.onclick = function(event) {
-    if (event.target == modal) { // si l'evenement est le modal on ferme le modal
-        modal.style.display = "none";
+    if (event.target == modal) { // Vérifier si l'élément cliqué est la modal elle-même
+        modal.style.display = "none"; // Cacher la modal
     }
 }
 
-
-// affichage de produits avec fetch (work) dans la modal
-function displayProject(works) { // fonction pour afficher les informations sur chaque projet dans le DOM 
+// Fonction pour afficher un projet dans la modal
+function displayProject(works) {
+    // Création du code HTML pour afficher un projet avec une image et un bouton de suppression
     const cards = `
-      <figure id ="M${works?.id}">
-      <img src="${works?.imageUrl} "crossOrigin="anonymous">
-       
-        <i id ="${works.id}" class="fa-regular fa-trash-can "></i>
-       
-        </div>
-             <figcaption>éditer</figcaption>
+      <figure id="M${works?.id}" style="position: relative;"> <!-- Attribuer un ID unique à l'élément figure et positionner le relatif -->
+          <img src="${works?.imageUrl}" crossOrigin="anonymous" style="width: 100%;"> <!-- Image du projet -->
+          <i id="${works.id}" class="fa-regular fa-trash-can trash-icon"></i> <!-- Icône de suppression avec un ID correspondant à l'ID du projet -->
       </figure>
-       `;
-    document.getElementById("products").insertAdjacentHTML("beforeend", cards); //insertion de la variable cards dans le html avant la fin de la balise
+    `;
+    // Ajouter le projet à l'élément #products dans la modal
+    document.getElementById("products").insertAdjacentHTML("beforeend", cards);
 }
 
+// Fonction pour afficher tous les projets dans la modal lors du clic sur "modifier"
 function displayAllModal(e) {
-    e.preventDefault(); //empêche le comportement par défaut du formulaire
+    e.preventDefault(); // Empêche le comportement par défaut du formulaire lors du clic
 
-    document.querySelector(".galleryModal").innerHTML = ""; // Effacement de l'élément HTML avec la classe .galleryModall
-    // Boucle pour afficher tous les projets
+    // Vider le contenu de la galerie de projets dans la modal pour qu'il n'y ait pas de duplications
+    document.querySelector(".galleryModal").innerHTML = "";
+
+    // Boucle pour afficher tous les projets en appelant displayProject pour chaque projet
     for (let j = 0; j <= AllProjects.length - 1; j++) {
-        displayProject(AllProjects[j]); // Appel de la fonction displayProject pour afficher les informations sur chaque projet
+        displayProject(AllProjects[j]);
     }
-
 }
 
+// Ajouter un écouteur d'événements sur le bouton "modifier" pour afficher tous les projets dans la modal
 update.addEventListener("click", displayAllModal);
 
-//quand on clique sur ajouter une photo on passe au content suivant modal
-const add = document.getElementById("button-add");
-const content = document.getElementById("modal-content");
-const content2 = document.getElementById("next-modal-container");
-const close2 = document.getElementById("close2");
+// Récupération des éléments du DOM nécessaires pour le formulaire d'ajout de projets
+const add = document.getElementById("button-add"); // Bouton pour passer au formulaire d'ajout
+const content = document.getElementById("modal-content"); // Contenu actuel de la modal
+const content2 = document.getElementById("next-modal-container"); // Contenu suivant de la modal (formulaire d'ajout)
+const close2 = document.getElementById("close2"); // Bouton pour fermer la modal lors de l'ajout de projet
 
+// Ajouter un écouteur d'événements sur le bouton "ajouter une photo" pour passer au contenu suivant dans la modal
 add.addEventListener("click", function() {
-    content.style.display = "none";
-    content2.style.display = "block";
+    content.style.display = "none";  // Masquer le contenu actuel
+    content2.style.display = "block";  // Afficher le contenu suivant
 });
 
-//quand on clique sur retour on passe au content précédent modal
+// Ajouter un écouteur d'événements sur le bouton "retour" pour revenir au contenu précédent dans la modal
 const back = document.getElementById("back");
 back.addEventListener("click", function() {
-    content.style.display = "block";
-    content2.style.display = "none";
+    content.style.display = "block";  // Afficher le contenu actuel
+    content2.style.display = "none";  // Masquer le contenu suivant
 });
 
-//quand on clique sur fermer on ferme la modal
+// Ajouter un écouteur d'événements sur le bouton "close2" pour fermer la modal
 close2.addEventListener("click", function() {
-    modal.style.display = "none";
+    modal.style.display = "none";  // Cacher la modal
 });
 
-// Fonction pour supprimer un projet
+// Fonction pour supprimer un projet via l'API
 function deleteProject(id) {
+    // Envoyer une requête DELETE pour supprimer le projet spécifié par l'ID
     fetch("http://localhost:5678/api/works/" + id, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + sessionStorage.getItem("token"),
-            },
-        })
-        .then((result) => {
-            if (result.status === 204) { //si le status est 204 on supprime le projet
-
-                console.log(result);
-                AllProjects = AllProjects.filter(element => element.id != id); //filter les projets qui ont un id différent de celui qu'on veut supprimer
-                console.log(AllProjects);
-                document.getElementById("M" + id).remove(); //supprime le projet dans la modal
-                document.getElementById("A" + id).remove(); //supprime le projet dans la page index
-
-            }
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+        method: "DELETE", // Méthode HTTP pour supprimer une ressource
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("token"), // Ajouter le token d'authentification dans les en-têtes
+        },
+    })
+    .then((result) => {
+        if (result.status === 204) {  // Vérifier si la suppression a réussi (code 204 signifie "Aucun contenu")
+            // Mettre à jour la liste des projets en filtrant celui qui a été supprimé
+            AllProjects = AllProjects.filter(element => element.id != id);
+            // Supprimer le projet de la modal en utilisant l'ID du projet
+            document.getElementById("M" + id).remove();
+            // Supprimer le projet de la page index en utilisant l'ID du projet
+            document.getElementById("A" + id).remove();
+        }
+    })
+    .catch((err) => {
+        console.error(err);  // Afficher les erreurs éventuelles dans la console
+    });
 }
 
-
-// Suppression d'un projet
+// Ajouter un écouteur d'événements pour supprimer un projet lorsque l'icône de suppression est cliquée
 document.addEventListener("click", function(e) {
-    if (e.target.classList.contains("fa-trash-can")) { //si on clique sur l'icone trash on supprime le projet
-        deleteProject(e.target.id); //supprime le projet dans la modal et dans la page index
-        // le e.target.id permet de récupérer l'id du projet sur lequel on a cliqué
+    if (e.target.classList.contains("fa-trash-can")) {  // Vérifier si l'élément cliqué est une icône de suppression
+        deleteProject(e.target.id);  // Appeler la fonction pour supprimer le projet
     }
 });
 
-//suppression de tous les projets
+// Ajouter un écouteur d'événements pour supprimer tous les projets lorsque le bouton de suppression est cliqué
 deleteBtn.addEventListener("click", function() {
     for (let i = 0; i < AllProjects.length; i++) {
-        deleteProject(AllProjects[i].id); // supprime tous les projets dans la modal et dans la page index 
-        // le AllProjects[i].id permet de récupérer l'id de chaque projet
-
+        deleteProject(AllProjects[i].id);  // Supprimer chaque projet en appelant deleteProject
     }
 });
 
+// Récupération des éléments du formulaire d'ajout
+const form = document.getElementById("form");  // Le formulaire pour ajouter un projet
+const title = document.getElementById("title");  // Champ pour le titre du projet
+const category = document.getElementById("category");  // Champ pour la catégorie du projet
+const imageUrl = document.getElementById("imageUrl");  // Champ pour l'URL de l'image du projet
+const button = document.getElementById("submit");  // Bouton pour soumettre le formulaire
 
-const form = document.getElementById("form");
-const title = document.getElementById("title");
-const category = document.getElementById("category");
-const imageUrl = document.getElementById("imageUrl");
-const button = document.getElementById("submit");
+// Ajouter un écouteur d'événements sur le bouton de soumission du formulaire
+button.addEventListener("click", function(e) {
+    e.preventDefault();  // Empêche le comportement par défaut du bouton
 
-button.addEventListener("click", function(e) { //quand on clique sur le bouton submit on envoie les données dans la base de données
-    e.preventDefault();
-    const data = { //on récupère les données du formulaire
-        title: title.value,
-        category: category.value,
-        imageUrl: imageUrl.value,
+    // Récupération des données du formulaire
+    const data = {
+        title: title.value,  // Récupérer le titre du projet
+        category: category.value,  // Récupérer la catégorie du projet
+        imageUrl: imageUrl.value,  // Récupérer l'URL de l'image du projet
     };
-    fetch("http://localhost:5678/api/works", { //on envoie les données dans la base de données
-        method: "POST",
+
+    // Envoyer une requête POST pour ajouter un nouveau projet via l'API
+    fetch("http://localhost:5678/api/works", {
+        method: "POST",  // Méthode HTTP pour créer une nouvelle ressource
         headers: {
-            "Content-Type": "application/json", //on précise le type de données 
-            Authorization: "Bearer " + sessionStorage.getItem("token"),
+            "Content-Type": "application/json",  // Indiquer que le corps de la requête contient des données JSON
+            Authorization: "Bearer " + sessionStorage.getItem("token"),  // Ajouter le token d'authentification dans les en-têtes
         },
-        body: JSON.stringify(data), //on convertit les données en JSON
-    }).then((result) => { //on récupère les données du formulaire
-        if (result.ok) { //si le status est ok on affiche les données dans la console
-            result.json().then((dt) => { //on récupère les données du formulaire
-                console.log(dt);
+        body: JSON.stringify(data),  // Convertir les données du formulaire en JSON
+    }).then((result) => {
+        if (result.ok) {  // Vérifier si la requête a réussi
+            result.json().then((dt) => {
+                console.log(dt);  // Afficher les données du nouveau projet dans la console
             });
         }
-    }).catch((err) => { //si le status est différent de ok on affiche l'erreur dans la console
-        console.error(err);
+    }).catch((err) => {
+        console.error(err);  // Afficher les erreurs éventuelles dans la console
     });
 });
 
-
+// Fonction pour télécharger une image et l'afficher dans le formulaire
 function telecharger() {
-    var telecharger_image = "";
-    const reader = new FileReader(); //permet de lire le contenu d'un fichier sous forme de flux de données 
+    var telecharger_image = "";  // Variable pour stocker l'image téléchargée
+    const reader = new FileReader();  // Créer un lecteur de fichiers
 
-    reader.addEventListener("load", () => { //permet de lire le contenu d'un fichier sous forme de flux de données
-        telecharger_image = reader.result;
-        const photo = document.getElementById("image_telecharger");
-        document.getElementById("image_telecharger_images").style.display = "block";
-
-        photo.style.backgroundImage = `url(${telecharger_image})`;
-        document.getElementById("ajout_container").style.display = "none";
+    // Ajouter un écouteur d'événements pour lire le fichier lorsque le chargement est terminé
+    reader.addEventListener("load", () => {
+        telecharger_image = reader.result;  // Récupérer le contenu du fichier en tant qu'URL de données
+        const photo = document.getElementById("image_telecharger");  // Élément pour afficher l'image téléchargée
+        document.getElementById("image_telecharger_images").style.display = "block";  // Afficher l'image téléchargée
+        photo.style.backgroundImage = `url(${telecharger_image})`;  // Définir l'image de fond pour afficher l'image téléchargée
+        document.getElementById("ajout_container").style.display = "none";  // Masquer le conteneur d'ajout d'image
     });
 
+    // Lire le contenu du fichier sélectionné
     reader.readAsDataURL(this.files[0]);
-    //readAsDataURL permet de lire le contenu d'un fichier sous forme de flux de données 
-
 }
 
+// Ajouter un écouteur d'événements pour déclencher la fonction de téléchargement d'image lorsque le champ de fichier change
 document.getElementById("imageUrl").addEventListener("change", telecharger);
+
+// Ajouter un écouteur d'événements pour ouvrir le sélecteur de fichiers lorsque le bouton "ajouter" est cliqué
 document.getElementById('adding').addEventListener('click', function() {
-    document.getElementById('imageUrl').click();
+    document.getElementById('imageUrl').click();  // Simuler un clic sur le champ de fichier pour ouvrir le sélecteur de fichiers
 });
 
-///////////////////Envoi des fichiers a API///////////////////
-
+// Ajouter un écouteur d'événements pour soumettre le formulaire avec les données de l'image
 button.addEventListener("click", (e) => {
-    e.preventDefault(); //annule le comportement par défaut du bouton submit
-
+    e.preventDefault();  // Empêche le comportement par défaut du bouton de soumission du formulaire
 
     // Récupération des éléments du formulaire
-    const photo = document.getElementById("imageUrl");
-    const category = document.getElementById("category");
-    const title = document.getElementById("title");
+    const photo = document.getElementById("imageUrl");  // Champ de fichier pour l'image
+    const category = document.getElementById("category");  // Champ de texte pour la catégorie
+    const title = document.getElementById("title");  // Champ de texte pour le titre
 
-    // Vérification que le formulaire est rempli
+    // Vérifier que tous les champs du formulaire sont remplis
     if (photo.value === "" || title.value === "" || category.value === "") {
-        document.getElementById("Error").innerHTML =
-            "Il faut remplir le formulaire.";
+        // Afficher un message d'erreur si un champ est vide
+        document.getElementById("Error").innerHTML = "Il faut remplir le formulaire.";
     } else {
-        document.getElementById("Error").innerHTML = "";
+        document.getElementById("Error").innerHTML = "";  // Effacer le message d'erreur si tous les champs sont remplis
 
-        // Récupération des catégories depuis l'API
-        fetch("http://localhost:5678/api/categories").then((res) => { //on récupère les catégories depuis l'API
-            console.log(res);
-            if (res.ok) {
-                res.json().then((categorydata) => { //.json() permet de récupérer les données en JSON 
-                    //.then() permet de récupérer les données de la promesse 
-                    // Parcours de la liste des catégories pour récupérer l'id correspondant à la catégorie sélectionnée
+        // Envoyer une requête GET pour récupérer les catégories disponibles
+        fetch("http://localhost:5678/api/categories").then((res) => {
+            if (res.ok) {  // Vérifier si la requête a réussi
+                res.json().then((categorydata) => {
+                    // Vérifier si la catégorie sélectionnée existe dans les données récupérées
                     for (let i = 0; i <= categorydata.length - 1; i++) {
-                        //length-1 car on commence à 0 et pas à 1 
-                        if (category.value === categorydata[i].name) { //si la valeur de la catégorie est égale à la valeur de la catégorie dans la liste
-                            categorydata[i].name = categorydata[i].id; //on récupère l'id de la catégorie correspondante 
-                            console.log(categorydata[i].id);
-                            console.log(category.value);
+                        if (category.value == categorydata[i].name) {
+                            const image = photo.files[0];  // Récupérer le fichier de l'image sélectionnée
 
-                            // Récupération de l'image et du token de l'utilisateur
-                            const image = document.getElementById("imageUrl").files[0]; //recupere l'image 
-                            let token = sessionStorage.getItem("token");
-                            console.log(`Bearer  ${token}`); // Bearer permet d'authentifier l'utilisateur 
-                            const title = document.getElementById("title").value;
-
-                            // Vérification de la taille de l'image
-                            if (image.size < 4 * 1048576) { // 1048576 = 1Mo 
-                                // Création du formulaire pour l'envoi des données
-                                const formData = new FormData(); //creation d'un objet de type formdata
-                                //FormData permet de créer un ensemble de paires clé/valeur représentant les champs d'un formulaire et leurs valeurs.
-                                formData.append("image", image); //ajout de l'image dans le formdata
-                                formData.append("title", title); //ajout du titre dans le formdata
-                                formData.append("category", categorydata[i].id); //ajout de la categorie dans le formdata
-
-                                // Envoi des données à l'API via une requête POST
-                                //async permet de définir une fonction asynchrone 
-                                //await permet d'attendre la résolution d'une promesse 
-                                const setNewProject = async(data) => { //fonction asynchrone pour envoyer les données a l'API       
-                                    //fonction asynchnrone permet d'attendre la résolution d'une promesse 
-                                    try { //essaye d'envoyer les données
-                                        const requete = await fetch( //envoie les données a l'api
-
-                                            "http://localhost:5678/api/works", {
-                                                method: "POST",
-                                                headers: {
-                                                    Authorization: `Bearer ${token}`, //envoie le token de l'utilisateur
-                                                    accept: "application/json", //accepte le format json
-                                                },
-                                                body: data,
-                                            }
-                                        );
-                                        if (requete.status === 201) {
-                                            document.getElementById("gallery").innerHTML = ""; //on vide la div gallery
-                                            document.querySelector(".galleryModal").innerHTML = ""; //on vide la div galleryModal
-                                            displayAllModal();
-
-
-                                        } else {
-                                            throw "Un problème est survenu";
-                                        }
-                                    } catch (e) {
-                                        console.error(e);
-                                    }
-                                };
-                                setNewProject(formData); //appel de la fonction pour envoyer les données 
-                                // parametre formData pour envoyer les données du formulaire 
+                            // Vérifier si la taille de l'image dépasse la limite de 4 Mo
+                            if (image.size > 4 * 1024 * 1024) {
+                                document.getElementById("Error").innerHTML = "L'image ne doit pas dépasser 4Mo.";  // Afficher un message d'erreur
+                                return;  // Arrêter la fonction si l'image est trop grande
                             } else {
-                                // Affichage d'un message d'erreur si la taille de l'image est trop grande
-                                document.getElementById("Error").innerHTML =
-                                    "La taille de la photo est supérieure à 4 Mo.";
-
-                                photo.value = null;
-                                document.getElementById("ajout_container").style.display = null; //affiche le formulaire d'ajout
-                                document.getElementById("image_telecharger_images").style.display = "none";
+                                document.getElementById("Error").innerHTML = "";  // Effacer le message d'erreur si la taille est correcte
                             }
-                            supprime(); //supprime les données du formulaire d'ajout quand on ferme la boite de dialogue 
+
+                            // Créer un FormData pour envoyer l'image et les autres données du formulaire
+                            let formData = new FormData();
+                            formData.append("image", image);  // Ajouter l'image au FormData
+                            formData.append("title", title.value);  // Ajouter le titre au FormData
+                            formData.append("category", categorydata[i].name);  // Ajouter la catégorie au FormData
+
+                            // Envoyer une requête POST pour ajouter le nouveau projet via l'API
+                            fetch("http://localhost:5678/api/works", {
+                                method: "POST",  // Méthode HTTP pour créer une nouvelle ressource
+                                headers: {
+                                    Authorization: `Bearer ${token}`,  // Ajouter le token d'authentification dans les en-têtes
+                                },
+                                body: formData,  // Envoyer les données du formulaire comme FormData
+                            }).then((response) => {
+                                if (response.ok) {  // Vérifier si la requête a réussi
+                                    // Vider le contenu des projets affichés et récupérer la liste mise à jour des projets
+                                    document.getElementById("products").innerHTML = "";
+                                    fetch("http://localhost:5678/api/works")
+                                        .then((res) => res.json())  // Récupérer les projets mis à jour
+                                        .then((dt) => {
+                                            AllProjects = dt;  // Mettre à jour la liste des projets
+                                            for (let j = 0; j < AllProjects.length; j++) {
+                                                displayProject(AllProjects[j]);  // Afficher chaque projet
+                                            }
+                                        });
+                                }
+                            }).catch((error) => {
+                                console.error("Erreur:", error);  // Afficher les erreurs éventuelles
+                            });
                         }
                     }
                 });
@@ -276,46 +268,3 @@ button.addEventListener("click", (e) => {
         });
     }
 });
-
-
-function supprime() { //fonction pour supprimer les données du formulaire d'ajout
-    // Suppression de l'affichage des données quand on ferme la boîte de dialogue d'ajout
-    document.getElementById("ajout_container").style.display = null;
-    document.getElementById("image_telecharger_images").style.display = "none";
-
-    // Suppression des données de titre
-    const input_titre_ajout = document.getElementById("title");
-    input_titre_ajout.value = null;
-
-    // Suppression de l'URL de la photo
-    const input_photo_url = document.getElementById("imageUrl");
-    input_photo_url.value = null;
-
-    // Suppression des données de catégorie
-    const category = document.getElementById("category");
-    category.value = null;
-}
-
-
-//creation d'une div lorsqu'on est connecté
-if (sessionStorage.getItem("token")) {
-
-
-    const modifier = `
-  
-  <div id= "modifier">
-    <i class="fa-regular fa-pen-to-square"></i>
-    <p>modifier</p>
-  </div>`;
-    // Création d'un modèle de boîte de dialogue pour la modification
-    const updates = `
-  
-        <a href ="#modal"></a>
-        <i class="fa-regular fa-pen-to-square"></i>
-        <p>modifier</p> 
-   `;
-    // Ajout du bouton "modifier" dans la page
-    document.getElementById("updates").insertAdjacentHTML("afterbegin", updates);
-
-
-}

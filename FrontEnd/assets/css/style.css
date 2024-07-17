@@ -70,6 +70,10 @@ body {
 	background-color: #FFFEF8;
 }
 
+main {
+    flex: 1;
+}
+
 header {
     display: flex;
     justify-content: space-between;
@@ -151,9 +155,60 @@ li:hover {
     line-height: 16px;
 }
 
+#flexTitre {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+	margin-top: 100px; 
+}
+
+#portfolio_titre,
+#updates {
+    display: flex;
+    flex-direction: column;
+}
+
 #portfolio h2 {
     text-align: center;
-    margin-bottom: 1em;
+}
+
+
+#btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 15px;
+    margin-bottom: 50px;
+	margin: 50px;
+}
+
+.btnOpt,
+.tous {
+    height: 37px;
+    background-color: #FFFEF8;
+    border: 1px solid #1d6154;
+    border-radius: 60px;
+    color: #1d6154;
+    cursor: pointer;
+    width: auto;
+    box-sizing: border-box;
+    padding: 0 18px;
+    font-family: 'Syne';
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+    text-align: center;
+    font-style: normal;
+}
+
+.btnOpt:hover {
+    background-color: #1D6154;
+    color: white;
+}
+
+.tous:hover {
+    background-color: #1D6154;
+    color: white;
 }
 
 .gallery {
@@ -214,4 +269,23 @@ input[type="submit"] {
     text-align: center;
     border-radius: 60px;
     cursor: pointer;
+}
+
+footer {
+	width: 100%;
+    background-color: white;
+    padding: 20px 0;
+	margin: 0;
+}
+
+footer nav ul {
+    display: flex;
+    justify-content: flex-end;
+	padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+footer nav ul li.mentions-legales {
+    font-size: 1em;
 }
