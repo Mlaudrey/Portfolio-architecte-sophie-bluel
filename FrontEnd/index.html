@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-	<meta charset="UTF-8">
-	<title>Sophie Bluel - Architecte d'intérieur</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
-	<meta name="description" content="Portfolio de Sophie Bluel, architecte d'intérieur.">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer"
-    />
+    <meta charset="UTF-8">
+    <title>Sophie Bluel - Architecte d'intérieur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="./assets/css/modal.css">
     <link rel="stylesheet" href="./assets/css/login.css">
@@ -27,9 +26,7 @@
                 <li><a href="#portfolio_titre">projets</a></li>
                 <li><a href="#contact">contact</a></li>
                 <li><a href="./login.html" id="btnLogin">login</a></li>
-                <li>
-                    <img src="./assets/icons/instagram.png" alt="Instagram">
-                </li>
+                <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
             </ul>
         </nav>
     </header>
@@ -37,124 +34,74 @@
         <section id="introduction">
             <figure id="introduction_photo">
                 <img src="./assets/images/sophie-bluel.png" alt="" id="previewImage">
-
-
-
             </figure>
             <article id="intro">
-
-
                 <h2>Designer d'espace</h2>
                 <p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
-                <p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail,
-                    le respect du planning et du budget.</p>
+                <p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
                 <p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
             </article>
         </section>
         <section id="portfolio">
-
             <div id="portfolio_modifier">
                 <div id="flexTitre">
                     <h2 id="portfolio_titre">Mes Projets</h2>
                     <button id="updates"></button>
                 </div>
-
                 <div id="modal" class="modal">
                     <div class="modal-content" id="modal-content">
                         <span id="close" class="close">&times;</span>
                         <div class="BodyModal">
                             <div class="titre-modal">Galerie photo</div>
                             <div id="products" class="galleryModal"></div>
-
-                            <div>
-                                <hr>
-                            </div>
-
+                            <div><hr></div>
                             <div class="btn-add-delete">
-                                <!-- Le bouton d'ajout de photo permet à l'utilisateur d'ajouter une photo à la galerie -->
-                                <button id="button-add" class="add">
-                              Ajouter une photo
-                        </button>
-                                <!-- Le bouton de suppression de photo permet à l'utilisateur de supprimer une photo de la galerie -->
-                                <button id="deleteBtn" class="supprimer">
-                              Supprimer La galerie
-                        </button>
-
+                                <button id="button-add" class="add">Ajouter une photo</button>
+                                <button id="deleteBtn" class="supprimer">Supprimer La galerie</button>
                             </div>
                         </div>
-
-
-
                     </div>
                     <div class="next-modal-container" id="next-modal-container">
                         <span id="close2" class="close">&times;</span>
-
-
                         <div class="galleryNextModal" id="NextModal">
-                            <div id="back"> <i class="fa-sharp fa-solid fa-arrow-left"></i></div>
+                            <div id="back"><i class="fa-sharp fa-solid fa-arrow-left"></i></div>
                             <div class="titre-modal">Ajout photo</div>
-                            <!--telecharger une image-->
                             <div class="galleryModal_ajout">
-
-
                                 <form action="#" method="post" enctype="multipart/form-data" id="form">
-
                                     <div id="image_telecharger_images">
                                         <div id="image_telecharger"></div>
                                     </div>
                                     <div id="ajout_container" class="ajouter-photo">
-                                        <img class="photo" src="./assets/images/photo.PNG" alt="image" />
-                                        <input type="file" name="fileToUpload" id="imageUrl" class="imageUrl" accept="image/png , image/jpg  ">
+                                        <img class="photo" src="./assets/images/photo.png" alt="image" />
+                                        <input type="file" name="fileToUpload" id="imageUrl" class="imageUrl" accept="image/png, image/jpg">
                                         <input type="button" value="+ Ajouter photo" id="adding" class="ajoutt">
                                         <p>jpg, png : 4mo max</p>
                                     </div>
                                     <div class="input_modal">
-
-
                                         <label for="title">Title</label>
                                         <input type="text" name="title" id="title">
                                     </div>
-                                    <!--option categories-->
                                     <div class="input_modal">
-
                                         <label>Catégorie</label>
                                         <select name="categories" id="category">
                                             <option value="Objets">Objets</option>
                                             <option value="Appartements">Appartements</option>
-                                            <option value="Hotels & restaurants">
-                                            Hotels & restaurants
-                                            </option>
+                                            <option value="Hotels & restaurants">Hotels & restaurants</option>
                                        </select>
                                     </div>
                             </div>
                             <div id="Error"></div>
-
                             <div class="modal_ajout_valider">
-
                                 <input type="submit" value="Valider" name="submit" id="submit">
                             </div>
                             </form>
-
-
-
                         </div>
-
-
                     </div>
-
-
-
                 </div>
             </div>
-
-            </div>
-            <div id="btn">
-
-            </div>
+            <div id="btn"></div>
             <div class="gallery" id="gallery"></div>
         </section>
-
-
         <section id="contact">
             <h2>Contact</h2>
             <p>Vous avez un projet ? Discutons-en !</p>
@@ -169,7 +116,6 @@
             </form>
         </section>
     </main>
-
     <footer>
         <nav>
             <ul>
@@ -178,5 +124,4 @@
         </nav>
     </footer>
 </body>
-
 </html>
