@@ -1,53 +1,53 @@
 const modal = document.getElementById("modal");
 const update = document.getElementById("updates");
 const close = document.getElementById("close");
-const deleteBtn = document.getElementById("deleteBtn");
 
+// Vérifie si l'utilisateur est connecté
 if (sessionStorage.getItem("token")) {
-    // Vider le contenu existant de #updates pour éviter la duplication
-    update.innerHTML = '';
+    update.innerHTML = ''; // Vider le contenu existant de #updates pour éviter la duplication
 
-    // Créer les éléments pour "modifier" et "updates"
+    // Créer et ajouter l'élément "modifier"
     const modifier = document.createElement("div");
     modifier.id = "modifier";
     modifier.innerHTML = `
         <i class="fa-regular fa-pen-to-square"></i>
         <p>modifier</p>
     `;
-    
-    // Ajouter les éléments à #updates
     update.appendChild(modifier);
-    
-    // Afficher le bouton "modifier"
-    update.style.display = "flex";
+    update.style.display = "flex"; // Afficher le bouton "modifier"
 } else {
-    update.style.display = "none";
+    update.style.display = "none"; // Masquer le bouton "modifier"
 }
 
+// Affiche le modal lorsque l'utilisateur clique sur le bouton "modifier"
 update.addEventListener("click", function() {
     modal.style.display = "block";
 });
 
+// Ferme le modal lorsque l'utilisateur clique sur le bouton de fermeture
 close.addEventListener("click", function() {
     modal.style.display = "none";
 });
 
+// Ferme le modal si l'utilisateur clique à l'extérieur du modal
 window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
 }
 
+// Affiche un projet dans la galerie
 function displayProject(works) {
     const cards = `
-      <figure id="M${works?.id}">
-          <img src="${works?.imageUrl}" crossOrigin="anonymous">
-          <i id="${works.id}" class="fa-regular fa-trash-can trash-icon"></i>
-      </figure>
+        <figure id="M${works?.id}">
+            <img src="${works?.imageUrl}" crossOrigin="anonymous">
+            <i id="${works.id}" class="fa-regular fa-trash-can trash-icon"></i>
+        </figure>
     `;
     document.getElementById("products").insertAdjacentHTML("beforeend", cards);
 }
 
+// Affiche tous les projets dans le modal
 function displayAllModal(e) {
     e.preventDefault();
     document.querySelector(".galleryModal").innerHTML = "";
@@ -63,52 +63,54 @@ const content = document.getElementById("modal-content");
 const content2 = document.getElementById("next-modal-container");
 const close2 = document.getElementById("close2");
 
+// Affiche le formulaire d'ajout de photo
 add.addEventListener("click", function() {
     content.style.display = "none";
     content2.style.display = "block";
 });
 
+// Retourne au modal principal
 const back = document.getElementById("back");
 back.addEventListener("click", function() {
     content.style.display = "block";
     content2.style.display = "none";
 });
 
+// Ferme le modal lorsque l'utilisateur clique sur le bouton de fermeture du second modal
 close2.addEventListener("click", function() {
     modal.style.display = "none";
 });
 
-function deleteProject(id) {
-    fetch("http://localhost:5678/api/works/" + id, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + sessionStorage.getItem("token"),
-        },
-    })
-    .then((result) => {
-        if (result.status === 204) {
-            AllProjects = AllProjects.filter(element => element.id != id);
-            document.getElementById("M" + id).remove();
-            document.getElementById("A" + id)?.remove();
-        }
-    })
-    .catch((err) => {
-        console.error(err);
-    });
-}
-
+// Supprime un projet lorsque l'utilisateur clique sur l'icône de la poubelle
 document.addEventListener("click", function(e) {
     if (e.target.classList.contains("fa-trash-can")) {
-        deleteProject(e.target.id);
+        const projectId = e.target.id;
+        console.log(`Suppression du projet avec l'ID ${projectId}`);
+        deleteProject(projectId);
     }
 });
 
-deleteBtn.addEventListener("click", function() {
-    for (let i = 0; i < AllProjects.length; i++) {
-        deleteProject(AllProjects[i].id);
-    }
-});
+// Fonction pour supprimer un projet en faisant une requête DELETE à l'API
+function deleteProject(projectId) {
+    fetch(`http://localhost:5678/api/works/${projectId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem("token")}`
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Mettre à jour l'interface utilisateur après la suppression réussie
+            document.getElementById(`M${projectId}`).remove();
+            console.log(`Projet avec l'ID ${projectId} supprimé avec succès.`);
+        } else {
+            console.error(`Erreur lors de la suppression du projet avec l'ID ${projectId}.`);
+        }
+    })
+    .catch(error => {
+        console.error("Erreur lors de la suppression du projet:", error);
+    });
+}
 
 const form = document.getElementById("form");
 const title = document.getElementById("title");
@@ -116,6 +118,7 @@ const category = document.getElementById("category");
 const imageUrl = document.getElementById("imageUrl");
 const button = document.getElementById("submit");
 
+// Gère la soumission du formulaire d'ajout de projet
 button.addEventListener("click", function(e) {
     e.preventDefault();
     const data = {
@@ -141,6 +144,7 @@ button.addEventListener("click", function(e) {
     });
 });
 
+// Télécharge l'image sélectionnée et l'affiche
 function telecharger() {
     var telecharger_image = "";
     const reader = new FileReader();

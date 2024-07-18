@@ -16,30 +16,28 @@
     <script src="./assets/js/modal.js" defer></script>
 </head>
 <body>
-    <div id="modify">
-        <div id="container"></div>
-    </div>
     <header>
         <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
         <nav>
             <ul>
-                <li><a href="#portfolio_titre">projets</a></li>
-                <li><a href="#contact">contact</a></li>
-                <li><a href="./login.html" id="btnLogin">login</a></li>
+                <li><a href="#portfolio_titre">Projets</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="./login.html" id="btnLogin">Login</a></li>
                 <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
             </ul>
         </nav>
     </header>
+
     <main>
         <section id="introduction">
-            <figure id="introduction_photo">
+            <figure>
                 <img src="./assets/images/sophie-bluel.png" alt="" id="previewImage">
             </figure>
-            <article id="intro">
+            <article class="article">
                 <h2>Designer d'espace</h2>
                 <p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
-                <p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
-                <p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
+                <p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux, et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
+                <p>En cas de besoin, une équipe pluridisciplinaire constituée de : architecte DPLG, décorateur(trice)</p>
             </article>
         </section>
         <section id="portfolio">
@@ -54,10 +52,9 @@
                         <div class="BodyModal">
                             <div class="titre-modal">Galerie photo</div>
                             <div id="products" class="galleryModal"></div>
-                            <div><hr></div>
+                            <hr>
                             <div class="btn-add-delete">
                                 <button id="button-add" class="add">Ajouter une photo</button>
-                                <button id="deleteBtn" class="supprimer">Supprimer La galerie</button>
                             </div>
                         </div>
                     </div>
@@ -78,7 +75,7 @@
                                         <p>jpg, png : 4mo max</p>
                                     </div>
                                     <div class="input_modal">
-                                        <label for="title">Title</label>
+                                        <label for="title">Titre</label>
                                         <input type="text" name="title" id="title">
                                     </div>
                                     <div class="input_modal">
@@ -89,17 +86,17 @@
                                             <option value="Hotels & restaurants">Hotels & restaurants</option>
                                        </select>
                                     </div>
+                                    <div id="Error"></div>
+                                    <div class="modal_ajout_valider">
+                                        <input type="submit" value="Valider" name="submit" id="submit">
+                                    </div>
+                                </form>
                             </div>
-                            <div id="Error"></div>
-                            <div class="modal_ajout_valider">
-                                <input type="submit" value="Valider" name="submit" id="submit">
-                            </div>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="btn"></div>
+            <div id="btn"></div> <!-- Élément ajouté pour contenir les boutons de filtre -->
             <div class="gallery" id="gallery"></div>
         </section>
         <section id="contact">
@@ -116,6 +113,8 @@
             </form>
         </section>
     </main>
+
+	<div class="footer-container">
     <footer>
         <nav>
             <ul>
@@ -123,5 +122,7 @@
             </ul>
         </nav>
     </footer>
+	</div>
+	
 </body>
 </html>

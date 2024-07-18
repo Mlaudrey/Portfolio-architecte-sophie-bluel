@@ -57,6 +57,11 @@ a {
     justify-content: center;
 }
 
+.underline {
+    text-decoration: underline;
+}
+
+
 .instagram {
     width: 22px;
     height: 22px;

@@ -3,8 +3,9 @@ const form = document.getElementById('loginForm');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const errorDiv = document.getElementById('errorMessage');
+const underline = document.querySelector('.underline');
 
-console.log("Éléments du DOM sélectionnés:", form, emailInput, passwordInput, errorDiv);
+console.log("Éléments du DOM sélectionnés:", form, emailInput, passwordInput, errorDiv, underline);
 
 // Ajout d'un écouteur d'événements pour la soumission du formulaire
 form.addEventListener('submit', (event) => {
@@ -60,4 +61,7 @@ form.addEventListener('submit', (event) => {
         console.error("Erreur lors de la requête:", error);
         errorDiv.textContent = 'Une erreur est survenue sur le site, veuillez contacter l\'administrateur!';
     });
+
+      // Ajout du style pour souligner le lien "Mot de passe oublié"
+      underline.style.textDecoration = 'underline';
 });
