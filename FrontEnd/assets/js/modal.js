@@ -1,3 +1,43 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // Obtenez le lien d'authentification
+    const authLink = document.getElementById('authLink');
+    
+    // Vérifiez si un token est présent dans le sessionStorage
+    const token = sessionStorage.getItem('token');
+
+    // Log pour vérifier l'état du token
+    console.log('Token trouvé dans sessionStorage:', token);
+
+    if (token) {
+        // Si le token est présent, l'utilisateur est connecté
+        authLink.textContent = 'Logout'; // Change le texte du lien pour "Logout"
+        authLink.href = '#'; // Utilisez "#" ou une URL pour la déconnexion si nécessaire
+
+        // Ajoutez un gestionnaire d'événements pour la déconnexion
+        authLink.addEventListener('click', () => {
+            console.log('Déconnexion en cours...');
+            
+            // Supprimez le token du sessionStorage
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('userId');
+
+            // Log pour confirmer la suppression du token
+            console.log('Token supprimé du sessionStorage');
+
+            // Redirection vers la page de connexion après déconnexion
+            window.location.href = './login.html';
+        });
+    } else {
+        // Si le token n'est pas présent, l'utilisateur n'est pas connecté
+        authLink.textContent = 'Login'; // Change le texte du lien pour "Login"
+        authLink.href = './login.html'; // Redirection vers la page de connexion
+    }
+
+    // Log pour vérifier l'état final du lien
+    console.log('Lien d\'authentification:', authLink.textContent, 'Href:', authLink.href);
+});
+
+// Code pour le mode édition
 const modal = document.getElementById("modal");
 const update = document.getElementById("updates");
 const close = document.getElementById("close");
@@ -15,10 +55,15 @@ if (sessionStorage.getItem("token")) {
     `;
     update.appendChild(modifier);
     update.style.display = "flex"; // Afficher le bouton "modifier"
+
+    // Met à jour le texte du lien d'authentification pour le mode édition
+    const authLink = document.getElementById('authLink');
+    if (authLink) {
+        authLink.textContent = 'Logout'; // Affiche "Logout" en mode édition
+    }
 } else {
     update.style.display = "none"; // Masquer le bouton "modifier"
 }
-
 
 // Affiche le modal lorsque l'utilisateur clique sur le bouton "modifier"
 update.addEventListener("click", function() {
