@@ -1,15 +1,34 @@
-const gallery = document.querySelector(".gallery");
-console.log("Élément de la galerie sélectionné:", gallery);
+// Fonction pour ajouter la bannière du mode édition
+function addEditModeBanner() {
+    // Création de la div pour le mode édition
+    const editModeDiv = document.createElement('div');
+    editModeDiv.id = 'edit-mode';
+    editModeDiv.className = 'edit-mode';
+    editModeDiv.innerHTML = `
+        <i class="fa-regular fa-pen-to-square edit-icon"></i>
+        <span class="edit-text">Mode édition</span>
+    `;
 
-// Vérifie la présence du token dans le sessionStorage
+    // Insérer la div en tête de page
+    document.body.insertBefore(editModeDiv, document.body.firstChild);
+}
+
+// Vérifie la présence du token dans le sessionStorage pour déterminer si l'utilisateur est en mode édition
 const token = sessionStorage.getItem('token');
 if (token) {
     console.log("Token trouvé dans sessionStorage:", token);
+    // Appeler la fonction pour ajouter la div de mode édition
+    addEditModeBanner();
 } else {
     console.log("Token non trouvé dans sessionStorage");
 }
 
-function informations(work) { // Fonction pour afficher les informations sur chaque projet
+// Sélection de l'élément de la galerie
+const gallery = document.querySelector(".gallery");
+console.log("Élément de la galerie sélectionné:", gallery);
+
+// Fonction pour afficher les informations sur chaque projet
+function informations(work) {
     const card = `
     <figure id="A${work?.id}">
       <img src="${work?.imageUrl}" crossOrigin="anonymous" alt="${work?.title}"> <!-- Ajout de l'attribut alt pour l'accessibilité -->
@@ -19,15 +38,17 @@ function informations(work) { // Fonction pour afficher les informations sur cha
     console.log(`Projet ajouté à la galerie: ${work?.title}`);
 }
 
-let AllProjects = []; // Tableau de tous les projets
+// Tableau pour stocker tous les projets
+let AllProjects = [];
+
+// Tableau pour stocker toutes les catégories, incluant une catégorie "Tous"
 let allCategories = [{
     "id": -1,
     "name": "Tous"
-}]; // Tableau de catégories avec un élément "Tous" pour afficher tous les projets
+}];
 
 // Fonction pour ajouter manuellement un projet
 function addManualProject() {
-    // Création d'un projet manuel
     const manualProject = {
         id: 5, 
         title: "Structures Thermopolis",
@@ -39,7 +60,7 @@ function addManualProject() {
     console.log("Projet ajouté manuellement:", manualProject);
 }
 
-// Récupération de la liste des catégories
+// Récupération de la liste des catégories depuis l'API
 fetch("http://localhost:5678/api/categories")
     .then((res) => {
         if (res.ok) return res.json(); // Récupération de toutes les catégories 
@@ -47,20 +68,20 @@ fetch("http://localhost:5678/api/categories")
     })
     .then((categories) => {
         console.log("Catégories récupérées:", categories);
-        // Création d'un bouton pour chaque catégorie
+        // Ajoute les catégories récupérées au tableau allCategories
         categories.forEach(element => {
-            allCategories.push(element); // Ajouter les catégories dans le tableau allCategories
+            allCategories.push(element);
         });
-        // Cacher le bouton all si l'utilisateur est connecté
+        // Affiche les boutons de filtre uniquement si l'utilisateur n'est pas en mode édition
         if (!sessionStorage.getItem("token")) {
-            displayFilter(); // Appel de la fonction displayFilter pour afficher les boutons de filtre dans le DOM
+            displayFilter();
         }
     })
     .catch((err) => {
         console.error("Erreur lors de la récupération des catégories:", err);
     });
 
-// Récupération de la liste des projets
+// Récupération de la liste des projets depuis l'API
 fetch("http://localhost:5678/api/works")
     .then((res) => {
         if (res.ok) return res.json();
@@ -70,7 +91,7 @@ fetch("http://localhost:5678/api/works")
         console.log("Projets récupérés:", data);
         AllProjects = data; // Stockage de tous les projets dans la variable AllProjects
         addManualProject(); // Ajout d'un projet manuel à la liste
-        displayProjects(AllProjects); // Appel de la fonction displayProjects pour afficher les projets
+        displayProjects(AllProjects); // Affiche tous les projets
     })
     .catch((err) => {
         console.error("Erreur lors de la récupération des projets:", err);
@@ -78,8 +99,8 @@ fetch("http://localhost:5678/api/works")
 
 // Fonction pour afficher les projets dans la galerie
 function displayProjects(projects) {
-    gallery.innerHTML = ""; // Effacer le contenu actuel de la galerie
-    projects.forEach(work => informations(work)); // Afficher chaque projet
+    gallery.innerHTML = ""; // Efface le contenu actuel de la galerie
+    projects.forEach(work => informations(work)); // Affiche chaque projet
 }
 
 // Fonction pour afficher les boutons de filtre
@@ -107,9 +128,9 @@ function displayFilter() {
 function filterProject(categoryId) {
     let filteredProjects;
     if (categoryId === -1) {
-        filteredProjects = AllProjects; // Afficher tous les projets
+        filteredProjects = AllProjects; // Affiche tous les projets
     } else {
-        filteredProjects = AllProjects.filter(work => work.categoryId === categoryId); // Filtrer les projets par catégorie
+        filteredProjects = AllProjects.filter(work => work.categoryId === categoryId); // Filtre les projets par catégorie
     }
-    displayProjects(filteredProjects); // Afficher les projets filtrés
+    displayProjects(filteredProjects); // Affiche les projets filtrés
 }

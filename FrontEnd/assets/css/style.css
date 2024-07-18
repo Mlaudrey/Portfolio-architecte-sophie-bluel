@@ -74,6 +74,27 @@ body {
     
 }
 
+/* Styles pour la div de mode édition */
+.edit-mode {
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.edit-mode .edit-text {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 16px;
+    padding-left: 10px;
+}
+
+
 
 main {
     flex: 1;
@@ -136,11 +157,6 @@ nav ul {
 
 nav li {
     padding: 0 10px;
-    font-size: 1.2em;
-}
-
-li:hover {
-    color: #B1663C;
 }
 
 #introduction {

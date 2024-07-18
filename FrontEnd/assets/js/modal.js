@@ -19,6 +19,7 @@ if (sessionStorage.getItem("token")) {
     update.style.display = "none"; // Masquer le bouton "modifier"
 }
 
+
 // Affiche le modal lorsque l'utilisateur clique sur le bouton "modifier"
 update.addEventListener("click", function() {
     modal.style.display = "block";
