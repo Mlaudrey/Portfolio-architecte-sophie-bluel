@@ -74,6 +74,30 @@ body {
     
 }
 
+/* Styles pour la div de mode édition */
+.edit-mode {
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    z-index: 1000;
+}
+
+.edit-mode .edit-icon {
+    margin-right: 10px;
+}
+
+.edit-mode .edit-text {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+}
+
 
 main {
     flex: 1;
@@ -179,7 +203,7 @@ article {
     font-weight: 400;
     font-size: 14px;
     line-height: 16px;
-	width: 72%;
+	width: 75%;
 }
 
 #flexTitre {
