@@ -1,138 +1,139 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Obtenez le lien d'authentification
+    // Obtenez l'élément du lien d'authentification
     const authLink = document.getElementById('authLink');
-    
-    // Vérifiez si un token est présent dans le sessionStorage
     const token = sessionStorage.getItem('token');
-
-    // Log pour vérifier l'état du token
     console.log('Token trouvé dans sessionStorage:', token);
 
     if (token) {
-        // Si le token est présent, l'utilisateur est connecté
-        authLink.textContent = 'Logout'; // Change le texte du lien pour "Logout"
-        authLink.href = '#'; // Utilisez "#" ou une URL pour la déconnexion si nécessaire
+        // Si un token est présent, cela signifie que l'utilisateur est connecté
+        authLink.textContent = 'Logout'; // Changez le texte du lien en "Logout"
+        authLink.href = '#'; // Modifiez l'URL du lien pour la déconnexion
 
         // Ajoutez un gestionnaire d'événements pour la déconnexion
         authLink.addEventListener('click', () => {
             console.log('Déconnexion en cours...');
             
-            // Supprimez le token du sessionStorage
+            // Supprimez le token et l'userId de sessionStorage
             sessionStorage.removeItem('token');
             sessionStorage.removeItem('userId');
 
-            // Log pour confirmer la suppression du token
+            // Affichez un message de confirmation dans la console
             console.log('Token supprimé du sessionStorage');
 
-            // Redirection vers la page de connexion après déconnexion
+            // Redirigez vers la page de connexion
             window.location.href = './login.html';
         });
     } else {
-        // Si le token n'est pas présent, l'utilisateur n'est pas connecté
-        authLink.textContent = 'Login'; // Change le texte du lien pour "Login"
-        authLink.href = './login.html'; // Redirection vers la page de connexion
+        // Si aucun token n'est présent, l'utilisateur n'est pas connecté
+        authLink.textContent = 'Login'; // Changez le texte du lien en "Login"
+        authLink.href = './login.html'; // Modifiez l'URL du lien pour rediriger vers la page de connexion
     }
 
-    // Log pour vérifier l'état final du lien
+    // Affichez l'état final du lien d'authentification dans la console pour le débogage
     console.log('Lien d\'authentification:', authLink.textContent, 'Href:', authLink.href);
 });
 
 // Code pour le mode édition
-const modal = document.getElementById("modal");
-const update = document.getElementById("updates");
-const close = document.getElementById("close");
+const modal = document.getElementById("modal"); // Récupérez l'élément du modal
+const update = document.getElementById("updates"); // Récupérez l'élément du bouton de mise à jour
+const close = document.getElementById("close"); // Récupérez l'élément du bouton de fermeture du modal
 
-// Vérifie si l'utilisateur est connecté
+// Vérifiez si l'utilisateur est connecté
 if (sessionStorage.getItem("token")) {
-    update.innerHTML = ''; // Vider le contenu existant de #updates pour éviter la duplication
+    // Vider le contenu existant de l'élément updates pour éviter la duplication
+    update.innerHTML = ''; 
 
-    // Créer et ajouter l'élément "modifier"
+    // Créez et ajoutez un nouvel élément "modifier" pour l'édition
     const modifier = document.createElement("div");
     modifier.id = "modifier";
     modifier.innerHTML = `
         <i class="fa-regular fa-pen-to-square"></i>
         <p>modifier</p>
     `;
-    update.appendChild(modifier);
-    update.style.display = "flex"; // Afficher le bouton "modifier"
+    update.appendChild(modifier); // Ajoutez l'élément "modifier" à updates
+    update.style.display = "flex"; // Affichez le bouton "modifier"
 
-    // Met à jour le texte du lien d'authentification pour le mode édition
+    // Mettez à jour le texte du lien d'authentification pour le mode édition
     const authLink = document.getElementById('authLink');
     if (authLink) {
-        authLink.textContent = 'Logout'; // Affiche "Logout" en mode édition
+        authLink.textContent = 'Logout'; // Affichez "Logout" en mode édition
     }
 } else {
-    update.style.display = "none"; // Masquer le bouton "modifier"
+    update.style.display = "none"; // Masquez le bouton "modifier" si l'utilisateur n'est pas connecté
 }
 
-// Affiche le modal lorsque l'utilisateur clique sur le bouton "modifier"
+// Affichez le modal lorsque l'utilisateur clique sur le bouton "modifier"
 update.addEventListener("click", function() {
     modal.style.display = "block";
 });
 
-// Ferme le modal lorsque l'utilisateur clique sur le bouton de fermeture
+// Fermez le modal lorsque l'utilisateur clique sur le bouton de fermeture
 close.addEventListener("click", function() {
     modal.style.display = "none";
 });
 
-// Ferme le modal si l'utilisateur clique à l'extérieur du modal
+// Fermez le modal si l'utilisateur clique à l'extérieur du modal
 window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
 }
 
-// Affiche un projet dans la galerie
+// Affichez un projet dans la galerie
 function displayProject(works) {
+    // Créez le contenu HTML pour un projet
     const cards = `
         <figure id="M${works?.id}">
             <img src="${works?.imageUrl}" crossOrigin="anonymous">
             <i id="${works.id}" class="fa-regular fa-trash-can trash-icon"></i>
         </figure>
     `;
+    // Ajoutez le contenu HTML à l'élément "products"
     document.getElementById("products").insertAdjacentHTML("beforeend", cards);
 }
 
-// Affiche tous les projets dans le modal
+// Affichez tous les projets dans le modal
 function displayAllModal(e) {
-    e.preventDefault();
-    document.querySelector(".galleryModal").innerHTML = "";
+    e.preventDefault(); // Empêchez le comportement par défaut du bouton
+    document.querySelector(".galleryModal").innerHTML = ""; // Videz le contenu existant de la galerie du modal
+    // Parcourez tous les projets et affichez-les
     for (let j = 0; j < AllProjects.length; j++) {
         displayProject(AllProjects[j]);
     }
 }
 
+// Ajoutez un gestionnaire d'événements pour afficher tous les projets dans le modal
 update.addEventListener("click", displayAllModal);
 
-const add = document.getElementById("button-add");
-const content = document.getElementById("modal-content");
-const content2 = document.getElementById("next-modal-container");
-const close2 = document.getElementById("close2");
+const add = document.getElementById("button-add"); // Récupérez l'élément du bouton d'ajout
+const content = document.getElementById("modal-content"); // Récupérez l'élément du contenu du modal principal
+const content2 = document.getElementById("next-modal-container"); // Récupérez l'élément du contenu du second modal
+const close2 = document.getElementById("close2"); // Récupérez l'élément du bouton de fermeture du second modal
 
-// Affiche le formulaire d'ajout de photo
+// Affichez le formulaire d'ajout de photo lorsque l'utilisateur clique sur le bouton d'ajout
 add.addEventListener("click", function() {
-    content.style.display = "none";
-    content2.style.display = "block";
+    content.style.display = "none"; // Masquez le contenu du modal principal
+    content2.style.display = "block"; // Affichez le contenu du second modal
 });
 
-// Retourne au modal principal
+// Retournez au modal principal
 const back = document.getElementById("back");
 back.addEventListener("click", function() {
-    content.style.display = "block";
-    content2.style.display = "none";
+    content.style.display = "block"; // Affichez le contenu du modal principal
+    content2.style.display = "none"; // Masquez le contenu du second modal
 });
 
-// Ferme le modal lorsque l'utilisateur clique sur le bouton de fermeture du second modal
+// Fermez le modal lorsque l'utilisateur clique sur le bouton de fermeture du second modal
 close2.addEventListener("click", function() {
     modal.style.display = "none";
 });
 
-// Supprime un projet lorsque l'utilisateur clique sur l'icône de la poubelle
+// Supprimez un projet lorsque l'utilisateur clique sur l'icône de la poubelle
 document.addEventListener("click", function(e) {
     if (e.target.classList.contains("fa-trash-can")) {
         const projectId = e.target.id;
         console.log(`Suppression du projet avec l'ID ${projectId}`);
-        deleteProject(projectId);
+        deleteProject(projectId); // Appelez la fonction de suppression du projet
     }
 });
 
@@ -146,7 +147,7 @@ function deleteProject(projectId) {
     })
     .then(response => {
         if (response.ok) {
-            // Mettre à jour l'interface utilisateur après la suppression réussie
+            // Supprimez l'élément du projet de l'interface utilisateur après une suppression réussie
             document.getElementById(`M${projectId}`).remove();
             console.log(`Projet avec l'ID ${projectId} supprimé avec succès.`);
         } else {
@@ -158,20 +159,21 @@ function deleteProject(projectId) {
     });
 }
 
-const form = document.getElementById("form");
-const title = document.getElementById("title");
-const category = document.getElementById("category");
-const imageUrl = document.getElementById("imageUrl");
-const button = document.getElementById("submit");
+const form = document.getElementById("form"); // Récupérez l'élément du formulaire
+const title = document.getElementById("title"); // Récupérez l'élément du champ titre
+const category = document.getElementById("category"); // Récupérez l'élément du champ catégorie
+const imageUrl = document.getElementById("imageUrl"); // Récupérez l'élément du champ URL de l'image
+const button = document.getElementById("submit"); // Récupérez l'élément du bouton de soumission
 
 // Gère la soumission du formulaire d'ajout de projet
 button.addEventListener("click", function(e) {
-    e.preventDefault();
+    e.preventDefault(); // Empêchez le comportement par défaut du bouton de soumission
     const data = {
-        title: title.value,
-        category: category.value,
-        imageUrl: imageUrl.value,
+        title: title.value, // Récupérez la valeur du champ titre
+        category: category.value, // Récupérez la valeur du champ catégorie
+        imageUrl: imageUrl.value, // Récupérez la valeur du champ URL de l'image
     };
+    // Envoyez une requête POST pour ajouter un nouveau projet
     fetch("http://localhost:5678/api/works", {
         method: "POST",
         headers: {
@@ -190,11 +192,12 @@ button.addEventListener("click", function(e) {
     });
 });
 
-// Télécharge l'image sélectionnée et l'affiche
+// Téléchargez l'image sélectionnée et l'affichez
 function telecharger() {
     var telecharger_image = "";
     const reader = new FileReader();
 
+    // Ajoutez un gestionnaire d'événements pour charger l'image
     reader.addEventListener("load", () => {
         telecharger_image = reader.result;
         const photo = document.getElementById("image_telecharger");
@@ -203,32 +206,39 @@ function telecharger() {
         document.getElementById("ajout_container").style.display = "none";
     });
 
+    // Lisez le fichier sélectionné comme URL de données
     reader.readAsDataURL(this.files[0]);
 }
 
+// Ajoutez un gestionnaire d'événements pour le changement de fichier
 document.getElementById("imageUrl").addEventListener("change", telecharger);
+// Ajoutez un gestionnaire d'événements pour le bouton d'ajout d'image
 document.getElementById('adding').addEventListener('click', function() {
     document.getElementById('imageUrl').click();
 });
 
+// Gère la soumission du formulaire avec des validations
 button.addEventListener("click", (e) => {
-    e.preventDefault();
-    const photo = document.getElementById("imageUrl");
-    const category = document.getElementById("category");
-    const title = document.getElementById("title");
+    e.preventDefault(); // Empêchez le comportement par défaut du bouton de soumission
+    const photo = document.getElementById("imageUrl"); // Récupérez l'élément du champ URL de l'image
+    const category = document.getElementById("category"); // Récupérez l'élément du champ catégorie
+    const title = document.getElementById("title"); // Récupérez l'élément du champ titre
 
+    // Vérifiez si tous les champs sont remplis
     if (photo.value === "" || title.value === "" || category.value === "") {
         document.getElementById("Error").innerHTML = "Il faut remplir le formulaire.";
     } else {
         document.getElementById("Error").innerHTML = "";
 
+        // Envoyez une requête pour récupérer les catégories disponibles
         fetch("http://localhost:5678/api/categories").then((res) => {
             if (res.ok) {
                 res.json().then((categorydata) => {
                     for (let i = 0; i < categorydata.length; i++) {
                         if (category.value === categorydata[i].name) {
-                            const image = photo.files[0];
+                            const image = photo.files[0]; // Récupérez le fichier image sélectionné
 
+                            // Vérifiez la taille de l'image
                             if (image.size > 4 * 1024 * 1024) {
                                 document.getElementById("Error").innerHTML = "L'image ne doit pas dépasser 4Mo.";
                                 return;
@@ -236,11 +246,13 @@ button.addEventListener("click", (e) => {
                                 document.getElementById("Error").innerHTML = "";
                             }
 
+                            // Créez un objet FormData pour envoyer les données du formulaire
                             let formData = new FormData();
                             formData.append("image", image);
                             formData.append("title", title.value);
                             formData.append("category", categorydata[i].name);
 
+                            // Envoyez une requête POST pour ajouter le projet
                             fetch("http://localhost:5678/api/works", {
                                 method: "POST",
                                 headers: {
@@ -249,6 +261,7 @@ button.addEventListener("click", (e) => {
                                 body: formData,
                             }).then((response) => {
                                 if (response.ok) {
+                                    // Mettez à jour l'interface utilisateur après une ajout réussi
                                     document.getElementById("products").innerHTML = "";
                                     fetch("http://localhost:5678/api/works")
                                         .then((res) => res.json())
