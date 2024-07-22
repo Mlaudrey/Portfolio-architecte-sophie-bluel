@@ -177,12 +177,6 @@ hr {
     text-align: center;
 }
 
-#image_telecharger {
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-}
-
 .imageUrl {
     bottom: -64px;
     left: -1px;
@@ -190,12 +184,6 @@ hr {
     height: 52px;
     width: 231px;
     cursor: pointer;
-}
-
-#image_telecharger_images {
-    width: 193px;
-    height: 218px;
-    display: none;
 }
 
 .fa-image {
@@ -240,6 +228,31 @@ hr {
     margin-top: -5px;
     color: #B9C5CC;
 }
+
+#image_telecharger_images {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 13px;
+    background: #E8F1F7;
+    width: 80%;
+    height: 150px;
+    margin-bottom: 40px;
+    border-radius: 3px;
+    z-index: 1;
+    margin: auto;
+}
+
+#image_telecharger {
+    width: 50%;
+    height: 100%;
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    background-position: center; 
+    margin-left: 100px;
+}
+
 
 #title,
 #category {

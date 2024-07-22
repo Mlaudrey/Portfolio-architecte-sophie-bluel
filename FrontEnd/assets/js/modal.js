@@ -96,7 +96,7 @@ function resetAddPhotoModal() {
     // Afficher la première page de la modal
     const content = document.getElementById("modal-content");
     const content2 = document.getElementById("next-modal-container");
-    content.style.display = "flex";
+    content.style.display = "block";
     content2.style.display = "none";
 }
 
