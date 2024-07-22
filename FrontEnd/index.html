@@ -7,8 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
-    <meta name="description" content="">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta name="description" content="Site de Sophie Bluel, architecte d'intérieur">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="./assets/css/modal.css">
     <link rel="stylesheet" href="./assets/css/login.css">
@@ -17,7 +17,6 @@
 </head>
 
 <body>
-
     <header>
         <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
         <nav>
@@ -33,7 +32,7 @@
     <main>
         <section id="introduction">
             <figure>
-                <img src="./assets/images/sophie-bluel.png" alt="" id="previewImage">
+                <img src="./assets/images/sophie-bluel.png" alt="Sophie Bluel" id="previewImage">
             </figure>
             <article class="article">
                 <h2>Designer d'espace</h2>
@@ -42,12 +41,15 @@
                 <p>En cas de besoin, une équipe pluridisciplinaire constituée de : architecte DPLG, décorateur(trice)</p>
             </article>
         </section>
+
         <section id="portfolio">
             <div id="portfolio_modifier">
                 <div id="flexTitre">
                     <h2 id="portfolio_titre">Mes Projets</h2>
                     <button id="updates"></button>
                 </div>
+
+                <!-- Modal pour galerie photo -->
                 <div id="modal" class="modal">
                     <div class="modal-content" id="modal-content">
                         <span id="close" class="close">&times;</span>
@@ -60,6 +62,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Modal pour ajout photo -->
                     <div class="next-modal-container" id="next-modal-container">
                         <span id="close2" class="close">&times;</span>
                         <div class="galleryNextModal" id="NextModal">
@@ -81,7 +85,7 @@
                                         <input type="text" name="title" id="title">
                                     </div>
                                     <div class="input_modal">
-                                        <label>Catégorie</label>
+                                        <label for="category">Catégorie</label>
                                         <select name="categories" id="category">
                                             <option value="Objets">Objets</option>
                                             <option value="Appartements">Appartements</option>
@@ -93,23 +97,16 @@
                                         <input type="submit" value="Valider" name="submit" id="submit">
                                     </div>
                                 </form>
-                                <h1>Téléversez une Image avec ID</h1>
-                                <form id="uploadForm">
-                                    <label for="projectId">ID du projet :</label>
-                                    <input type="text" id="projectId" name="id" required>
-                                    <br>
-                                    <label for="imageFile">Choisissez une image :</label>
-                                    <input type="file" id="imageFile" name="image" accept="image/*" required>
-                                    <button type="submit">Téléverser</button>
-                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="btn"></div> <!-- Élément ajouté pour contenir les boutons de filtre -->
+
+            <div id="btn"></div> <!-- Vérifiez si cet élément est nécessaire -->
             <div class="gallery" id="gallery"></div>
         </section>
+
         <section id="contact">
             <h2>Contact</h2>
             <p>Vous avez un projet ? Discutons-en !</p>
@@ -125,15 +122,15 @@
         </section>
     </main>
 
-	<div class="footer-container">
-    <footer>
-        <nav>
-            <ul>
-                <li class="mentions-legales">Mentions Légales</li>
-            </ul>
-        </nav>
-    </footer>
-	</div>
-	
+    <div class="footer-container">
+        <footer>
+            <nav>
+                <ul>
+                    <li class="mentions-legales">Mentions Légales</li>
+                </ul>
+            </nav>
+        </footer>
+    </div>
+    
 </body>
 </html>

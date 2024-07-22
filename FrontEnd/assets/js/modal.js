@@ -1,80 +1,124 @@
+// Exécuter le code après que le DOM soit complètement chargé
 document.addEventListener('DOMContentLoaded', () => {
-    // Obtenez l'élément du lien d'authentification
+    // Récupérer l'élément du lien d'authentification par son ID
     const authLink = document.getElementById('authLink');
+    // Récupérer le token de session depuis le sessionStorage
     const token = sessionStorage.getItem('token');
     console.log('Token trouvé dans sessionStorage:', token);
 
+    // Vérifier si le token existe
     if (token) {
+        // Si le token existe, modifier le texte du lien d'authentification en "Logout"
         authLink.textContent = 'Logout';
+        // Modifier l'URL du lien pour empêcher la redirection
         authLink.href = '#';
 
+        // Ajouter un événement au clic pour la déconnexion
         authLink.addEventListener('click', () => {
             console.log('Déconnexion en cours...');
+            // Supprimer le token et l'ID utilisateur du sessionStorage
             sessionStorage.removeItem('token');
             sessionStorage.removeItem('userId');
             console.log('Token supprimé du sessionStorage');
+            // Rediriger vers la page de login
             window.location.href = './login.html';
         });
     } else {
+        // Si le token n'existe pas, modifier le texte du lien d'authentification en "Login"
         authLink.textContent = 'Login';
+        // Modifier l'URL du lien pour rediriger vers la page de login
         authLink.href = './login.html';
     }
 
     console.log('Lien d\'authentification:', authLink.textContent, 'Href:', authLink.href);
 });
 
-// Code pour le mode édition
+// Récupérer les éléments nécessaires pour le mode édition
 const modal = document.getElementById("modal");
 const update = document.getElementById("updates");
 const close = document.getElementById("close");
 
+// Vérifier si un token est présent dans le sessionStorage pour activer le mode édition
 if (sessionStorage.getItem("token")) {
+    // Vider le contenu de l'élément update
     update.innerHTML = '';
+    // Créer un nouveau div pour le mode édition
     const modifier = document.createElement("div");
     modifier.id = "modifier";
     modifier.innerHTML = `
         <i class="fa-regular fa-pen-to-square"></i>
         <p>modifier</p>
     `;
+    // Ajouter le nouveau div à l'élément update
     update.appendChild(modifier);
-    update.style.display = "flex";
+    update.style.display = "flex"; // Afficher le bouton de modification
 
+    // Modifier le texte du lien d'authentification en "Logout"
     const authLink = document.getElementById('authLink');
     if (authLink) {
         authLink.textContent = 'Logout';
     }
 } else {
+    // Si aucun token n'est présent, cacher le bouton de modification
     update.style.display = "none";
 }
 
-// Fonction pour réinitialiser les modales
+// Fonction pour réinitialiser l'affichage des modales
 function resetModals() {
     const content = document.getElementById("modal-content");
     const content2 = document.getElementById("next-modal-container");
-    content.style.display = "block";
-    content2.style.display = "none";
-    modal.style.display = "none";
+    content.style.display = "block"; // Afficher le contenu principal de la modal
+    content2.style.display = "none"; // Cacher le contenu de la deuxième modal
+    modal.style.display = "none"; // Cacher la modal principale
 }
 
-// Affichez le modal lorsque l'utilisateur clique sur le bouton "modifier"
+// Fonction pour réinitialiser l'état de la modal d'ajout de photo
+function resetAddPhotoModal() {
+    const photo = document.getElementById("imageUrl");
+    const category = document.getElementById("category");
+    const title = document.getElementById("title");
+    const error = document.getElementById("Error");
+    const imagePreview = document.getElementById("image_telecharger");
+    const imagePreviewContainer = document.getElementById("image_telecharger_images");
+    const ajoutContainer = document.getElementById("ajout_container");
+
+    // Réinitialiser les champs de formulaire
+    photo.value = "";
+    category.value = "";
+    title.value = "";
+    error.innerHTML = "";
+
+    // Réinitialiser les prévisualisations d'image
+    imagePreview.style.backgroundImage = "";
+    imagePreviewContainer.style.display = "none";
+    ajoutContainer.style.display = "flex";
+
+    // Afficher la première page de la modal
+    const content = document.getElementById("modal-content");
+    const content2 = document.getElementById("next-modal-container");
+    content.style.display = "flex";
+    content2.style.display = "none";
+}
+
+// Afficher la modal lorsque l'utilisateur clique sur le bouton "modifier"
 update.addEventListener("click", function() {
-    resetModals(); // Réinitialise les modales
-    modal.style.display = "block";
+    resetModals(); // Réinitialiser les modales
+    modal.style.display = "block"; // Afficher la modal
 });
 
-// Fermez le modal lorsque l'utilisateur clique sur le bouton de fermeture
+// Fermer la modal lorsque l'utilisateur clique sur le bouton de fermeture
 close.addEventListener("click", function() {
-    modal.style.display = "none";
+    modal.style.display = "none"; // Cacher la modal
 });
 
-// Fermez le modal si l'utilisateur clique à l'extérieur du modal
+// Fermer la modal si l'utilisateur clique à l'extérieur de celle-ci
 window.onclick = function(event) {
     if (event.target == modal) {
-        modal.style.display = "none";
+        modal.style.display = "none"; // Cacher la modal
     }
 }
 
-// Affichez un projet dans la galerie
+// Afficher un projet dans la galerie
 function displayProject(works) {
     const cards = `
         <figure id="M${works?.id}">
@@ -85,15 +129,16 @@ function displayProject(works) {
     document.getElementById("products").insertAdjacentHTML("beforeend", cards);
 }
 
-// Affichez tous les projets dans le modal
+// Afficher tous les projets dans le modal
 function displayAllModal(e) {
-    e.preventDefault();
-    document.querySelector(".galleryModal").innerHTML = "";
+    e.preventDefault(); // Empêcher le comportement par défaut du clic
+    document.querySelector(".galleryModal").innerHTML = ""; // Vider la galerie
     for (let j = 0; j < AllProjects.length; j++) {
-        displayProject(AllProjects[j]);
+        displayProject(AllProjects[j]); // Afficher chaque projet
     }
 }
 
+// Ajouter un événement au clic sur le bouton "modifier" pour afficher tous les projets
 update.addEventListener("click", displayAllModal);
 
 const add = document.getElementById("button-add");
@@ -101,32 +146,38 @@ const content = document.getElementById("modal-content");
 const content2 = document.getElementById("next-modal-container");
 const close2 = document.getElementById("close2");
 
+// Afficher la modal d'ajout de photo lorsque l'utilisateur clique sur le bouton "Ajouter"
 add.addEventListener("click", function() {
-    content.style.display = "none";
-    content2.style.display = "block";
+    resetAddPhotoModal(); // Réinitialiser l'état de la modal d'ajout de photo
+    content.style.display = "none"; // Cacher le contenu principal de la modal
+    content2.style.display = "block"; // Afficher le contenu de la deuxième modal
 });
 
+// Retourner à la première modal lorsque l'utilisateur clique sur le bouton "back"
 const back = document.getElementById("back");
 back.addEventListener("click", function() {
-    content.style.display = "block";
-    content2.style.display = "none";
+    content.style.display = "block"; // Afficher le contenu principal de la modal
+    content2.style.display = "none"; // Cacher le contenu de la deuxième modal
 });
 
+// Fermer la modal d'ajout de photo lorsque l'utilisateur clique sur le bouton de fermeture
 close2.addEventListener("click", function() {
-    modal.style.display = "none";
+    modal.style.display = "none"; // Cacher la modal principale
 });
 
+// Ajouter un événement au clic pour la suppression d'un projet
 document.addEventListener("click", function(e) {
     if (e.target.classList.contains("fa-trash-can")) {
-        const projectId = e.target.id;
+        const projectId = e.target.id; // Récupérer l'ID du projet à supprimer
         console.log(`Suppression du projet avec l'ID ${projectId}`);
-        deleteProject(projectId);
+        deleteProject(projectId); // Appeler la fonction de suppression du projet
     }
 });
 
+// Fonction pour supprimer un projet
 function deleteProject(projectId) {
     fetch(`http://localhost:5678/api/works/${projectId}`, {
-        method: 'DELETE',
+        method: 'DELETE', // Utiliser la méthode DELETE
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem("token")}`
         }
@@ -136,7 +187,7 @@ function deleteProject(projectId) {
             console.log(`Projet avec l'ID ${projectId} supprimé avec succès de la base de données.`);
             const projectElement = document.getElementById(`M${projectId}`);
             if (projectElement) {
-                projectElement.remove();
+                projectElement.remove(); // Supprimer l'élément du DOM
                 console.log(`Élément avec l'ID M${projectId} supprimé du DOM.`);
             } else {
                 console.error(`Élément avec l'ID M${projectId} non trouvé dans le DOM.`);
@@ -150,26 +201,30 @@ function deleteProject(projectId) {
     });
 }
 
+// Récupérer les éléments du formulaire d'ajout de photo
 const form = document.getElementById("form");
 const title = document.getElementById("title");
 const category = document.getElementById("category");
 const imageUrl = document.getElementById("imageUrl");
 const button = document.getElementById("submit");
 
+// Ajouter un événement au clic sur le bouton de soumission du formulaire
 button.addEventListener("click", function(e) {
-    e.preventDefault();
+    e.preventDefault(); // Empêcher le comportement par défaut du bouton
+
     const data = {
         title: title.value,
         category: category.value,
         imageUrl: imageUrl.value,
     };
+
     fetch("http://localhost:5678/api/works", {
-        method: "POST",
+        method: "POST", // Utiliser la méthode POST
         headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data), // Envoyer les données en format JSON
     }).then((result) => {
         if (result.ok) {
             result.json().then((dt) => {
@@ -181,6 +236,7 @@ button.addEventListener("click", function(e) {
     });
 });
 
+// Fonction pour télécharger et prévisualiser une image
 function telecharger() {
     var telecharger_image = "";
     const reader = new FileReader();
@@ -193,20 +249,25 @@ function telecharger() {
         document.getElementById("ajout_container").style.display = "none";
     });
 
-    reader.readAsDataURL(this.files[0]);
+    reader.readAsDataURL(this.files[0]); // Lire le fichier sélectionné
 }
 
+// Ajouter un événement de changement sur l'élément de sélection d'image
 document.getElementById("imageUrl").addEventListener("change", telecharger);
+
+// Simuler un clic sur l'élément de sélection d'image lorsque l'utilisateur clique sur le bouton d'ajout
 document.getElementById('adding').addEventListener('click', function() {
     document.getElementById('imageUrl').click();
 });
 
+// Ajouter un autre événement au clic sur le bouton de soumission du formulaire pour vérifier les champs requis
 button.addEventListener("click", (e) => {
     e.preventDefault();
     const photo = document.getElementById("imageUrl");
     const category = document.getElementById("category");
     const title = document.getElementById("title");
 
+    // Vérifier si tous les champs sont remplis
     if (photo.value === "" || title.value === "" || category.value === "") {
         document.getElementById("Error").innerHTML = "Il faut remplir le formulaire.";
     } else {
@@ -216,38 +277,34 @@ button.addEventListener("click", (e) => {
             if (res.ok) {
                 res.json().then((categorydata) => {
                     for (let i = 0; i < categorydata.length; i++) {
-                        if (category.value === categorydata[i].name) {
-                            const image = photo.files[0];
-
-                            if (image.size > 4 * 1024 * 1024) {
-                                document.getElementById("Error").innerHTML = "L'image ne doit pas dépasser 4Mo.";
-                                return;
-                            } else {
-                                document.getElementById("Error").innerHTML = "";
-                            }
-
-                            let formData = new FormData();
-                            formData.append("image", image);
-                            formData.append("title", title.value);
-                            formData.append("category", categorydata[i].name);
-
+                        if (category.value === categorydata[i].id) {
                             fetch("http://localhost:5678/api/works", {
-                                method: "POST",
+                                method: "POST", // Utiliser la méthode POST
                                 headers: {
-                                    Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                                    "Content-Type": "application/json",
+                                    Authorization: "Bearer " + sessionStorage.getItem("token"),
                                 },
-                                body: formData,
-                            }).then((response) => {
-                                if (response.ok) {
-                                    document.getElementById("products").innerHTML = "";
-                                    fetch("http://localhost:5678/api/works")
-                                        .then((res) => res.json())
-                                        .then((dt) => {
-                                            AllProjects = dt;
-                                            for (let j = 0; j < AllProjects.length; j++) {
-                                                displayProject(AllProjects[j]);
-                                            }
-                                        });
+                                body: JSON.stringify({
+                                    title: title.value,
+                                    imageUrl: photo.value,
+                                    categoryId: category.value,
+                                }),
+                            }).then((result) => {
+                                if (result.ok) {
+                                    result.json().then((data) => {
+                                        console.log(data);
+
+                                        // Actualiser la galerie après l'ajout d'un nouveau projet
+                                        fetch("http://localhost:5678/api/works")
+                                            .then((result) => result.json())
+                                            .then((data) => {
+                                                AllProjects = data;
+                                                document.querySelector(".galleryModal").innerHTML = "";
+                                                for (let j = 0; j < AllProjects.length; j++) {
+                                                    displayProject(AllProjects[j]);
+                                                }
+                                            });
+                                    });
                                 } else {
                                     document.getElementById("Error").innerHTML = "Une erreur s'est produite lors de l'ajout du projet.";
                                 }
