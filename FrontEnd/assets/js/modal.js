@@ -299,7 +299,7 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
         const fileInput = document.getElementById('imageFile');
         formData.append('image', fileInput.files[0]);
 
-        fetch('http://localhost:5678/api/works/upload', { // Assurez-vous que l'URL correspond à votre point de terminaison d'upload
+        fetch('http://localhost:5678/api/works', { // Assurez-vous que l'URL correspond à votre point de terminaison d'upload
             method: 'POST',
             body: formData,
             headers: {
@@ -315,40 +315,92 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
             console.error('Erreur lors du téléversement de l\'image:', error);
         });
     });
+    const express = require('express');
+    const multer = require('multer');
+    const path = require('path');
+    const app = express();
+    const port = 5678;
+    
+    // Configuration de multer pour le téléversement des fichiers
+    const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, 'uploads/');
+        },
+        filename: (req, file, cb) => {
+            cb(null, `${Date.now()}-${file.originalname}`);
+        }
+    });
+    
+    const upload = multer({ storage: storage });
+    
+    app.use(express.json());
+    
+    // Point de terminaison pour le téléversement d'images avec un ID
+    app.post('/api/works/upload', upload.single('image'), (req, res) => {
+        const projectId = req.body.id;
+        if (req.file && projectId) {
+            res.json({
+                message: "Image téléversée avec succès",
+                data: {
+                    projectId: projectId,
+                    imageUrl: `/uploads/${req.file.filename}`
+                }
+            });
+        } else {
+            res.status(400).json({
+                message: "Aucun fichier téléversé ou ID manquant"
+            });
+        }
+    });
+    
+    // Middleware pour gérer les erreurs
+    app.use((err, req, res, next) => {
+        console.error(err.stack);
+        res.status(500).json({
+            message: "Erreur interne du serveur",
+            error: err.message
+        });
+    });
+    
+    app.listen(port, () => {
+        console.log(`Serveur à l'écoute sur le port ${port}`);
+    });
     document.getElementById('uploadForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Empêche le formulaire de se soumettre normalement
 
         const formData = new FormData();
         const fileInput = document.getElementById('imageFile');
+        const projectIdInput = document.getElementById('projectId');
         const file = fileInput.files[0];
+        const projectId = projectIdInput.value;
 
-        if (file) {
+        if (file && projectId) {
             formData.append('image', file);
+            formData.append('id', projectId);
 
-            fetch('http://localhost:5678/api/works', { // Assurez-vous que l'URL correspond à votre API
+            fetch('http://localhost:5678/api/works/upload', { // Assurez-vous que l'URL correspond à votre API
                 method: 'POST',
                 body: formData,
                 headers: {
                     'Authorization': `Bearer ${sessionStorage.getItem("token")}`
                 }
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erreur lors du téléversement');
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log('Image téléversée avec succès:', data);
-                alert('Image téléversée avec succès!');
-                // Mettez à jour l'interface utilisateur si nécessaire
+                if (data.message) {
+                    console.log('Image téléversée avec succès:', data);
+                    alert('Image téléversée avec succès!');
+                    // Mettez à jour l'interface utilisateur si nécessaire
+                } else {
+                    throw new Error('Réponse inattendue du serveur');
+                }
             })
             .catch(error => {
                 console.error('Erreur lors du téléversement de l\'image:', error);
                 alert('Erreur lors du téléversement de l\'image: ' + error.message);
             });
         } else {
-            console.error('Aucun fichier sélectionné.');
-            alert('Aucun fichier sélectionné.');
+            console.error('Aucun fichier ou ID sélectionné.');
+            alert('Aucun fichier ou ID sélectionné.');
         }
-    });
+    });    
