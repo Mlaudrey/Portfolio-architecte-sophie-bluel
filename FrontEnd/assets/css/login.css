@@ -98,3 +98,8 @@ a {
     align-items: center;
     gap: 8px;
 }
+
+#errorMessage {
+    font-weight: bold;
+    font-size: 18px;
+}
