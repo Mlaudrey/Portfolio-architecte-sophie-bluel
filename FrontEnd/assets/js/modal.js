@@ -139,6 +139,7 @@ document.addEventListener("click", function(e) {
 
 // Fonction pour supprimer un projet en faisant une requête DELETE à l'API
 function deleteProject(projectId) {
+    // Effectuer la requête DELETE pour supprimer le projet de la base de données
     fetch(`http://localhost:5678/api/works/${projectId}`, {
         method: 'DELETE',
         headers: {
@@ -147,11 +148,20 @@ function deleteProject(projectId) {
     })
     .then(response => {
         if (response.ok) {
-            // Supprimez l'élément du projet de l'interface utilisateur après une suppression réussie
-            document.getElementById(`M${projectId}`).remove();
-            console.log(`Projet avec l'ID ${projectId} supprimé avec succès.`);
+            // Confirmation de la suppression réussie côté serveur
+            console.log(`Projet avec l'ID ${projectId} supprimé avec succès de la base de données.`);
+            
+            // Suppression de l'élément du DOM après confirmation
+            const projectElement = document.getElementById(`M${projectId}`);
+            
+            if (projectElement) {
+                projectElement.remove(); // Retirer l'élément du DOM
+                console.log(`Élément avec l'ID M${projectId} supprimé du DOM.`);
+            } else {
+                console.error(`Élément avec l'ID M${projectId} non trouvé dans le DOM.`);
+            }
         } else {
-            console.error(`Erreur lors de la suppression du projet avec l'ID ${projectId}.`);
+            console.error(`Erreur lors de la suppression du projet avec l'ID ${projectId} côté serveur.`);
         }
     })
     .catch(error => {
@@ -282,3 +292,63 @@ button.addEventListener("click", (e) => {
         });
     }
 });
+document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Empêche le formulaire de se soumettre normalement
+
+        const formData = new FormData();
+        const fileInput = document.getElementById('imageFile');
+        formData.append('image', fileInput.files[0]);
+
+        fetch('http://localhost:5678/api/works/upload', { // Assurez-vous que l'URL correspond à votre point de terminaison d'upload
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem("token")}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Image téléversée avec succès:', data);
+            // Mettez à jour l'interface utilisateur si nécessaire
+        })
+        .catch(error => {
+            console.error('Erreur lors du téléversement de l\'image:', error);
+        });
+    });
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Empêche le formulaire de se soumettre normalement
+
+        const formData = new FormData();
+        const fileInput = document.getElementById('imageFile');
+        const file = fileInput.files[0];
+
+        if (file) {
+            formData.append('image', file);
+
+            fetch('http://localhost:5678/api/works', { // Assurez-vous que l'URL correspond à votre API
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem("token")}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erreur lors du téléversement');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Image téléversée avec succès:', data);
+                alert('Image téléversée avec succès!');
+                // Mettez à jour l'interface utilisateur si nécessaire
+            })
+            .catch(error => {
+                console.error('Erreur lors du téléversement de l\'image:', error);
+                alert('Erreur lors du téléversement de l\'image: ' + error.message);
+            });
+        } else {
+            console.error('Aucun fichier sélectionné.');
+            alert('Aucun fichier sélectionné.');
+        }
+    });
