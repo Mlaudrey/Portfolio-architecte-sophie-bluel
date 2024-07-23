@@ -47,19 +47,6 @@ let allCategories = [{
     "name": "Tous"
 }];
 
-// Fonction pour ajouter manuellement un projet
-function addManualProject() {
-    const manualProject = {
-        id: 5, 
-        title: "Structures Thermopolis",
-        imageUrl: "./assets/images/structures-thermopolis.png", 
-        categoryId: 1 
-    };
-    
-    AllProjects.push(manualProject); // Ajoute le projet au tableau AllProjects
-    console.log("Projet ajouté manuellement:", manualProject);
-}
-
 // Récupération de la liste des catégories depuis l'API
 fetch("http://localhost:5678/api/categories")
     .then((res) => {
@@ -90,7 +77,6 @@ fetch("http://localhost:5678/api/works")
     .then((data) => {
         console.log("Projets récupérés:", data);
         AllProjects = data; // Stockage de tous les projets dans la variable AllProjects
-        addManualProject(); // Ajout d'un projet manuel à la liste
         displayProjects(AllProjects); // Affiche tous les projets
     })
     .catch((err) => {
