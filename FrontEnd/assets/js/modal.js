@@ -212,27 +212,50 @@ const button = document.getElementById("submit");
 button.addEventListener("click", function(e) {
     e.preventDefault(); // Empêcher le comportement par défaut du bouton
 
-    const data = {
-        title: title.value,
-        category: category.value,
-        imageUrl: imageUrl.value,
-    };
+    const photo = imageUrl.files[0];
+    const categoryId = parseInt(category.value, 10); // Convertir la catégorie en nombre
+
+    if (!photo || !title.value || isNaN(categoryId)) {
+        document.getElementById("Error").innerHTML = "Il faut remplir le formulaire correctement.";
+        return;
+    }
+
+    // Créer un FormData pour envoyer le fichier image
+    const formData = new FormData();
+    formData.append("title", title.value);
+    formData.append("category", categoryId);
+    formData.append("image", photo); // Utiliser le fichier image
 
     fetch("http://localhost:5678/api/works", {
-        method: "POST", // Utiliser la méthode POST
+        method: "POST",
         headers: {
-            "Content-Type": "application/json",
             Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
-        body: JSON.stringify(data), // Envoyer les données en format JSON
-    }).then((result) => {
+        body: formData // Envoyer les données en format FormData
+    })
+    .then(result => {
         if (result.ok) {
-            result.json().then((dt) => {
-                console.log(dt);
+            result.json().then(data => {
+                console.log(data);
+
+                // Actualiser la galerie après l'ajout d'un nouveau projet
+                fetch("http://localhost:5678/api/works")
+                    .then(result => result.json())
+                    .then(data => {
+                        AllProjects = data;
+                        document.querySelector(".galleryModal").innerHTML = "";
+                        for (let j = 0; j < AllProjects.length; j++) {
+                            displayProject(AllProjects[j]);
+                        }
+                    });
             });
+        } else {
+            document.getElementById("Error").innerHTML = "Une erreur s'est produite lors de l'ajout du projet.";
         }
-    }).catch((err) => {
+    })
+    .catch(err => {
         console.error(err);
+        document.getElementById("Error").innerHTML = "Une erreur s'est produite lors de l'ajout du projet.";
     });
 });
 
@@ -258,61 +281,4 @@ document.getElementById("imageUrl").addEventListener("change", telecharger);
 // Simuler un clic sur l'élément de sélection d'image lorsque l'utilisateur clique sur le bouton d'ajout
 document.getElementById('adding').addEventListener('click', function() {
     document.getElementById('imageUrl').click();
-});
-
-// Ajouter un autre événement au clic sur le bouton de soumission du formulaire pour vérifier les champs requis
-button.addEventListener("click", (e) => {
-    e.preventDefault();
-    const photo = document.getElementById("imageUrl");
-    const category = document.getElementById("category");
-    const title = document.getElementById("title");
-
-    // Vérifier si tous les champs sont remplis
-    if (photo.value === "" || title.value === "" || category.value === "") {
-        document.getElementById("Error").innerHTML = "Il faut remplir le formulaire.";
-    } else {
-        document.getElementById("Error").innerHTML = "";
-
-        fetch("http://localhost:5678/api/categories").then((res) => {
-            if (res.ok) {
-                res.json().then((categorydata) => {
-                    for (let i = 0; i < categorydata.length; i++) {
-                        if (category.value === categorydata[i].id) {
-                            fetch("http://localhost:5678/api/works", {
-                                method: "POST", // Utiliser la méthode POST
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    Authorization: "Bearer " + sessionStorage.getItem("token"),
-                                },
-                                body: JSON.stringify({
-                                    title: title.value,
-                                    imageUrl: photo.value,
-                                    categoryId: category.value,
-                                }),
-                            }).then((result) => {
-                                if (result.ok) {
-                                    result.json().then((data) => {
-                                        console.log(data);
-
-                                        // Actualiser la galerie après l'ajout d'un nouveau projet
-                                        fetch("http://localhost:5678/api/works")
-                                            .then((result) => result.json())
-                                            .then((data) => {
-                                                AllProjects = data;
-                                                document.querySelector(".galleryModal").innerHTML = "";
-                                                for (let j = 0; j < AllProjects.length; j++) {
-                                                    displayProject(AllProjects[j]);
-                                                }
-                                            });
-                                    });
-                                } else {
-                                    document.getElementById("Error").innerHTML = "Une erreur s'est produite lors de l'ajout du projet.";
-                                }
-                            });
-                        }
-                    }
-                });
-            }
-        });
-    }
 });
