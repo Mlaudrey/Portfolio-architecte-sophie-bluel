@@ -96,16 +96,27 @@ function displayFilter() {
         console.error("Élément avec l'ID 'btn' non trouvé.");
         return;
     }
+    
     allCategories.forEach(element => {
         const newButton = document.createElement("button");
         newButton.type = "button";
         newButton.innerHTML = element.name;
         newButton.className = "btnOpt";
         newButton.setAttribute("id", element.id);
+        
+        // Ajout d'un événement au clic pour filtrer les projets et gérer l'état actif du bouton
         newButton.onclick = function() {
             filterProject(element.id); // Filtrage des projets par catégorie
             console.log(`Filtrage des projets par catégorie: ${element.name}`);
+
+            // Gestion de l'état actif du bouton
+            const activeButton = document.querySelector('.btnOpt.active');
+            if (activeButton) {
+                activeButton.classList.remove('active'); // Retire la classe active de l'ancien bouton actif
+            }
+            newButton.classList.add('active'); // Ajoute la classe active au bouton cliqué
         };
+        
         btn.appendChild(newButton); // Ajout du bouton à l'élément contenant les boutons de filtre
     });
 }

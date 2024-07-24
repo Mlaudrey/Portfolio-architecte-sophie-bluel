@@ -262,6 +262,11 @@ article {
     color: white;
 }
 
+.btnOpt.active {
+    background-color: #1D6154; 
+    color:white;
+}
+
 .gallery {
     width: 85%;
     display: grid;

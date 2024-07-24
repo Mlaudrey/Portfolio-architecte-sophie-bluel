@@ -146,9 +146,9 @@
 .next-modal-container {
     overflow: auto;
     width: 50%;
-    height: 80%;
+    height: 85%;
     max-width: 630px;
-    max-height: 100vh;
+    max-height: 670px;
     padding: 30px;
     background: #fff;
     border-radius: 10px;
@@ -171,8 +171,8 @@ hr {
     height: 34px;
     color: red;
     font-weight: bolder;
-    margin-top: 16px;
-    margin-bottom: -30px;
+    margin-top: 40px;
+    margin-bottom: -40px;
     font-size: 16px;
     text-align: center;
 }
@@ -292,8 +292,14 @@ hr {
 }
 
 #submit {
-    background: #a7a7a7;
     border-radius: 60px;
+    border: 1px #1d6154;
+    width: 237px;
+    height: 36px;
+    cursor: pointer;
+    background-color: #1d6154;
+    color: white;
+    margin-top: 35px;
 }
 
 #submit:hover {
