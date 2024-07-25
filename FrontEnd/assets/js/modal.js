@@ -178,12 +178,16 @@ function deleteProject(projectId) {
     .then(response => {
         if (response.ok) {
             console.log(`Projet avec l'ID ${projectId} supprimé avec succès de la base de données.`);
-            const projectElement = document.getElementById(`M${projectId}`);
+            const products = document.getElementById("products");
+            const projectElement = products.querySelector(`[id="M${projectId}"]`);
+            const gallery = document.getElementById("gallery");
+            const galleryElement = gallery.querySelector(`[id="A${projectId}"]`);
             if (projectElement) {
                 projectElement.remove(); // Supprimer l'élément du DOM
+                galleryElement.remove(); // Supprimer l'élément du DOM
                 console.log(`Élément avec l'ID M${projectId} supprimé du DOM.`);
                 // Ne pas fermer la modal ici
-                displayAllModal({preventDefault: () => {}});
+                //displayAllModal({preventDefault: () => {}});
             } else {
                 console.error(`Élément avec l'ID M${projectId} non trouvé dans le DOM.`);
             }
@@ -242,6 +246,8 @@ button.addEventListener("click", function(e) {
                         for (let j = 0; j < AllProjects.length; j++) {
                             displayProject(AllProjects[j]);
                         }
+                        // Recharger la page après l'ajout de tous les projets
+                        window.location.reload();
                     });
             });
         } else {
