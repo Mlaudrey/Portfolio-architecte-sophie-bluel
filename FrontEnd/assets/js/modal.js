@@ -1,4 +1,3 @@
-// Exécuter le code après que le DOM soit complètement chargé
 document.addEventListener('DOMContentLoaded', () => {
     // Récupérer l'élément du lien d'authentification par son ID
     const authLink = document.getElementById('authLink');
@@ -69,7 +68,8 @@ function resetModals() {
     const content2 = document.getElementById("next-modal-container");
     content.style.display = "block"; // Afficher le contenu principal de la modal
     content2.style.display = "none"; // Cacher le contenu de la deuxième modal
-    modal.style.display = "none"; // Cacher la modal principale
+    // Supprimer la ligne suivante pour ne pas cacher la modal principale
+    // modal.style.display = "none"; 
 }
 
 // Fonction pour réinitialiser l'état de la modal d'ajout de photo
@@ -189,6 +189,7 @@ function deleteProject(projectId) {
             if (projectElement) {
                 projectElement.remove(); // Supprimer l'élément du DOM
                 console.log(`Élément avec l'ID M${projectId} supprimé du DOM.`);
+                // Ne pas fermer la modal ici
             } else {
                 console.error(`Élément avec l'ID M${projectId} non trouvé dans le DOM.`);
             }
