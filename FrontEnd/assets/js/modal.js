@@ -68,8 +68,6 @@ function resetModals() {
     const content2 = document.getElementById("next-modal-container");
     content.style.display = "block"; // Afficher le contenu principal de la modal
     content2.style.display = "none"; // Cacher le contenu de la deuxième modal
-    // Supprimer la ligne suivante pour ne pas cacher la modal principale
-    // modal.style.display = "none"; 
 }
 
 // Fonction pour réinitialiser l'état de la modal d'ajout de photo
@@ -160,11 +158,6 @@ back.addEventListener("click", function() {
     content2.style.display = "none"; // Cacher le contenu de la deuxième modal
 });
 
-// Fermer la modal d'ajout de photo lorsque l'utilisateur clique sur le bouton de fermeture
-close2.addEventListener("click", function() {
-    modal.style.display = "none"; // Cacher la modal principale
-});
-
 // Ajouter un événement au clic pour la suppression d'un projet
 document.addEventListener("click", function(e) {
     if (e.target.classList.contains("fa-trash-can")) {
@@ -190,6 +183,7 @@ function deleteProject(projectId) {
                 projectElement.remove(); // Supprimer l'élément du DOM
                 console.log(`Élément avec l'ID M${projectId} supprimé du DOM.`);
                 // Ne pas fermer la modal ici
+                displayAllModal({preventDefault: () => {}});
             } else {
                 console.error(`Élément avec l'ID M${projectId} non trouvé dans le DOM.`);
             }
