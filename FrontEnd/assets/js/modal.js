@@ -198,7 +198,6 @@ function deleteProject(projectId) {
                 galleryElement.remove(); // Supprimer l'élément du DOM
                 console.log(`Élément avec l'ID M${projectId} supprimé du DOM.`);
                 // Ne pas fermer la modal ici
-                //displayAllModal({preventDefault: () => {}});
             } else {
                 console.error(`Élément avec l'ID M${projectId} non trouvé dans le DOM.`);
             }
