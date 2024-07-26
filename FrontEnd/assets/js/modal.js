@@ -127,6 +127,17 @@ function displayProject(works) {
     document.getElementById("products").insertAdjacentHTML("beforeend", cards);
 }
 
+// Ajouter un projet dans la galerie
+function addToGallery(works) {
+    const cards = `
+        <figure id="A${works?.id}">
+            <img src="${works?.imageUrl}" crossOrigin="anonymous">
+            <i id="${works.id}" class="fa-regular fa-trash-can trash-icon"></i>
+        </figure>
+    `;
+    document.getElementById("gallery").insertAdjacentHTML("beforeend", cards);
+}
+
 // Afficher tous les projets dans le modal
 function displayAllModal(e) {
     e.preventDefault(); // Empêcher le comportement par défaut du clic
@@ -243,11 +254,11 @@ button.addEventListener("click", function(e) {
                     .then(data => {
                         AllProjects = data;
                         document.querySelector(".galleryModal").innerHTML = "";
+                        document.getElementById("gallery").innerHTML = "";
                         for (let j = 0; j < AllProjects.length; j++) {
-                            displayProject(AllProjects[j]);
+                            addToGallery(AllProjects[j]);
                         }
-                        // Recharger la page après l'ajout de tous les projets
-                        window.location.reload();
+                        document.getElementById("modal").style.display = "none";
                     });
             });
         } else {
