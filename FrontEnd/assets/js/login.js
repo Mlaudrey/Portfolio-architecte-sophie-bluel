@@ -35,10 +35,10 @@ form.addEventListener('submit', (event) => {
             console.log("Authentification réussie");
 
             return response.json().then(data => {
-                // Stockage du token et de l'ID utilisateur dans LocalStorage
+                // Stockage du token et de l'ID utilisateur dans sessionStorage
                 sessionStorage.setItem('token', data.token);
                 sessionStorage.setItem('userId', data.userId);
-                console.log("Token et userId stockés dans LocalStorage");
+                console.log("Token et userId stockés dans sessionStorage");
 
                 // Redirection vers la page d'accueil
                 window.location.href = './index.html';
