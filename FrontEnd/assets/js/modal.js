@@ -125,6 +125,17 @@ window.onclick = function(event) {
     }
 }
 
+// Afficher un projet dans la galerie
+function displayProject(works) {
+    const cards = `
+        <figure id="M${works?.id}">
+            <img src="${works?.imageUrl}" crossOrigin="anonymous">
+            <i id="${works.id}" class="fa-regular fa-trash-can trash-icon"></i>
+        </figure>
+    `;
+    document.getElementById("products").insertAdjacentHTML("beforeend", cards);
+}
+
 // Ajouter un projet dans la galerie
 function addToGallery(works) {
     const cards = `
