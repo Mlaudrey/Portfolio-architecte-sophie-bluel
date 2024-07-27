@@ -125,7 +125,7 @@ window.onclick = function(event) {
     }
 }
 
-// Afficher un projet dans la galerie dans la modal1
+// Afficher un projet dans la galerie dans la modal
 function displayProject(works) {
     const cards = `
         <figure id="M${works?.id}">
@@ -136,7 +136,7 @@ function displayProject(works) {
     document.getElementById("products").insertAdjacentHTML("beforeend", cards);
 }
 
-// Ajouter un projet dans la galerie dans la modal1
+// Ajouter un projet dans la galerie dans la modal
 function addToGallery(works) {
     const cards = `
         <figure id="A${works?.id}">
@@ -193,21 +193,32 @@ function deleteProject(projectId) {
     .then(response => {
         if (response.ok) {
             console.log(`Projet avec l'ID ${projectId} supprimé avec succès de la base de données.`);
-             // Mettre à jour le tableau AllProjects en mémoire
-             AllProjects = AllProjects.filter(project => project.id !== parseInt(projectId));
-
-             // Supprimer les éléments du DOM
-             const products = document.getElementById("products");
-             const projectElement = products.querySelector(`[id="M${projectId}"]`);
-             const gallery = document.getElementById("gallery");
-             const galleryElement = gallery.querySelector(`[id="A${projectId}"]`);
- 
-             if (projectElement) {
-                 projectElement.remove(); // Supprimer l'élément du DOM
-                 console.log(`Élément avec l'ID M${projectId} supprimé du DOM.`);
+            
+            // Mettre à jour le tableau AllProjects en mémoire
+            AllProjects = AllProjects.filter(project => project.id !== parseInt(projectId));
+            
+            // Supprimer les éléments du DOM
+            const products = document.getElementById("products");
+            const gallery = document.getElementById("gallery");
+            
+            // Sélectionner et supprimer les éléments associés au projet
+            const projectElement = products.querySelector(`[id="M${projectId}"]`);
+            const galleryElement = gallery.querySelector(`[id="A${projectId}"]`);
+            
+            if (projectElement) {
+                projectElement.remove(); // Supprimer l'élément du DOM
+                console.log(`Élément avec l'ID M${projectId} supprimé du DOM.`);
             } else {
-                console.error(`Élément avec l'ID M${projectId} non trouvé dans le DOM.`);
+                console.error(`Élément avec l'ID M${projectId} non trouvé dans #products.`);
             }
+            
+            if (galleryElement) {
+                galleryElement.remove(); // Supprimer l'élément du DOM
+                console.log(`Élément avec l'ID A${projectId} supprimé du DOM.`);
+            } else {
+                console.error(`Élément avec l'ID A${projectId} non trouvé dans #gallery.`);
+            }
+            
         } else {
             console.error(`Erreur lors de la suppression du projet avec l'ID ${projectId} côté serveur.`);
         }
@@ -216,6 +227,7 @@ function deleteProject(projectId) {
         console.error(`Erreur lors de la suppression du projet avec l'ID ${projectId}:`, error);
     });
 }
+
 
 // Fonction pour ajouter un nouveau projet
 const title = document.getElementById("title");
