@@ -125,7 +125,7 @@ window.onclick = function(event) {
     }
 }
 
-// Afficher un projet dans la galerie
+// Afficher un projet dans la galerie dans la modal1
 function displayProject(works) {
     const cards = `
         <figure id="M${works?.id}">
@@ -136,7 +136,7 @@ function displayProject(works) {
     document.getElementById("products").insertAdjacentHTML("beforeend", cards);
 }
 
-// Ajouter un projet dans la galerie
+// Ajouter un projet dans la galerie dans la modal1
 function addToGallery(works) {
     const cards = `
         <figure id="A${works?.id}">
@@ -193,14 +193,18 @@ function deleteProject(projectId) {
     .then(response => {
         if (response.ok) {
             console.log(`Projet avec l'ID ${projectId} supprimé avec succès de la base de données.`);
-            const products = document.getElementById("products");
-            const projectElement = products.querySelector(`[id="M${projectId}"]`);
-            const gallery = document.getElementById("gallery");
-            const galleryElement = gallery.querySelector(`[id="A${projectId}"]`);
-            if (projectElement) {
-                projectElement.remove(); // Supprimer l'élément du DOM
-                galleryElement.remove(); // Supprimer l'élément du DOM
-                console.log(`Élément avec l'ID M${projectId} supprimé du DOM.`);
+             // Mettre à jour le tableau AllProjects en mémoire
+             AllProjects = AllProjects.filter(project => project.id !== parseInt(projectId));
+
+             // Supprimer les éléments du DOM
+             const products = document.getElementById("products");
+             const projectElement = products.querySelector(`[id="M${projectId}"]`);
+             const gallery = document.getElementById("gallery");
+             const galleryElement = gallery.querySelector(`[id="A${projectId}"]`);
+ 
+             if (projectElement) {
+                 projectElement.remove(); // Supprimer l'élément du DOM
+                 console.log(`Élément avec l'ID M${projectId} supprimé du DOM.`);
             } else {
                 console.error(`Élément avec l'ID M${projectId} non trouvé dans le DOM.`);
             }
