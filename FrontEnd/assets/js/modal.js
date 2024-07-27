@@ -273,7 +273,7 @@ button.addEventListener("click", function(e) {
                         document.querySelector(".galleryModal").innerHTML = "";
                         document.getElementById("gallery").innerHTML = "";
                         for (let j = 0; j < AllProjects.length; j++) {
-                            addToGallery(AllProjects[j]);
+                            informations(AllProjects[j]);
                         }
                         document.getElementById("modal").style.display = "none";
                         resetAddPhotoModal(); // Réinitialiser la modal d'ajout de photo après l'ajout
