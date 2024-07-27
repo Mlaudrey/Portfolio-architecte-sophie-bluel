@@ -36,6 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
 const modal = document.getElementById("modal");
 const update = document.getElementById("updates");
 const close = document.getElementById("close");
+const add = document.getElementById("button-add");
+const close2 = document.getElementById("close2");
 
 // Vérifier si un token est présent dans le sessionStorage pour activer le mode édition
 if (sessionStorage.getItem("token")) {
@@ -107,6 +109,13 @@ update.addEventListener("click", function() {
 // Fermer la modal lorsque l'utilisateur clique sur le bouton de fermeture
 close.addEventListener("click", function() {
     modal.style.display = "none"; // Cacher la modal
+    resetAddPhotoModal(); // Réinitialiser la modal d'ajout de photo
+});
+
+// Fermer la modal lorsque l'utilisateur clique sur le bouton de fermeture de la deuxième modal
+close2.addEventListener("click", function() {
+    modal.style.display = "none"; // Cacher la modal
+    resetAddPhotoModal(); // Réinitialiser la modal d'ajout de photo
 });
 
 // Fermer la modal si l'utilisateur clique à l'extérieur de celle-ci
@@ -150,23 +159,18 @@ function displayAllModal(e) {
 // Ajouter un événement au clic sur le bouton "modifier" pour afficher tous les projets
 update.addEventListener("click", displayAllModal);
 
-const add = document.getElementById("button-add");
-const content = document.getElementById("modal-content");
-const content2 = document.getElementById("next-modal-container");
-const close2 = document.getElementById("close2");
-
 // Afficher la modal d'ajout de photo lorsque l'utilisateur clique sur le bouton "Ajouter"
 add.addEventListener("click", function() {
     resetAddPhotoModal(); // Réinitialiser l'état de la modal d'ajout de photo
-    content.style.display = "none"; // Cacher le contenu principal de la modal
-    content2.style.display = "block"; // Afficher le contenu de la deuxième modal
+    document.getElementById("modal-content").style.display = "none"; // Cacher le contenu principal de la modal
+    document.getElementById("next-modal-container").style.display = "block"; // Afficher le contenu de la deuxième modal
 });
 
 // Retourner à la première modal lorsque l'utilisateur clique sur le bouton "back"
 const back = document.getElementById("back");
 back.addEventListener("click", function() {
-    content.style.display = "block"; // Afficher le contenu principal de la modal
-    content2.style.display = "none"; // Cacher le contenu de la deuxième modal
+    document.getElementById("modal-content").style.display = "block"; // Afficher le contenu principal de la modal
+    document.getElementById("next-modal-container").style.display = "none"; // Cacher le contenu de la deuxième modal
 });
 
 // Ajouter un événement au clic pour la suppression d'un projet
@@ -197,7 +201,6 @@ function deleteProject(projectId) {
                 projectElement.remove(); // Supprimer l'élément du DOM
                 galleryElement.remove(); // Supprimer l'élément du DOM
                 console.log(`Élément avec l'ID M${projectId} supprimé du DOM.`);
-                // Ne pas fermer la modal ici
             } else {
                 console.error(`Élément avec l'ID M${projectId} non trouvé dans le DOM.`);
             }
@@ -206,12 +209,11 @@ function deleteProject(projectId) {
         }
     })
     .catch(error => {
-        console.error("Erreur lors de la suppression du projet:", error);
+        console.error(`Erreur lors de la suppression du projet avec l'ID ${projectId}:`, error);
     });
 }
 
-// Récupérer les éléments du formulaire d'ajout de photo
-const form = document.getElementById("form");
+// Fonction pour ajouter un nouveau projet
 const title = document.getElementById("title");
 const category = document.getElementById("category");
 const imageUrl = document.getElementById("imageUrl");
@@ -258,6 +260,7 @@ button.addEventListener("click", function(e) {
                             addToGallery(AllProjects[j]);
                         }
                         document.getElementById("modal").style.display = "none";
+                        resetAddPhotoModal(); // Réinitialiser la modal d'ajout de photo après l'ajout
                     });
             });
         } else {
